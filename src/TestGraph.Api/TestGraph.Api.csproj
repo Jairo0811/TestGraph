@@ -1,0 +1,7 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+  <ItemGroup>
+    <ProjectReference Include="..\TestGraph.Application\TestGraph.Application.csproj" />
+    <ProjectReference Include="..\TestGraph.Analysis\TestGraph.Analysis.csproj" />
+    <ProjectReference Include="..\TestGraph.Infrastructure\TestGraph.Infrastructure.csproj" />
+  </ItemGroup>
+</Project>
