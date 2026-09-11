@@ -1,24 +1,87 @@
+<div align="center">
+
 # TestGraph
 
-> **Visualize logic. Discover paths. Design better tests.**
+<img src="https://img.shields.io/badge/UNAPEC-ISO--300-003B70?style=for-the-badge" alt="UNAPEC ISO-300" />
+<img src="https://img.shields.io/badge/Estado-Fase%200%20completada-2563EB?style=for-the-badge" alt="Estado: Fase 0 completada" />
+<img src="https://img.shields.io/badge/Tipo-Portafolio%20%7C%20Open%20Source-6F42C1?style=for-the-badge" alt="Proyecto de portafolio y open source" />
 
-**TestGraph** is an open-source visual white-box testing and control-flow analysis platform. It is designed to transform structured pseudocode into interactive control-flow graphs, calculate cyclomatic complexity, identify linearly independent paths, generate adjacency matrices, and assist with structural test-case design.
+<br/><br/>
 
-TestGraph evolves from a 2024 academic software-engineering project into a modern engineering tool focused on deterministic program-flow analysis.
+<a href="https://github.com/Jairo0811/TestGraph/actions/workflows/ci.yml">
+  <img src="https://github.com/Jairo0811/TestGraph/actions/workflows/ci.yml/badge.svg" alt="CI" />
+</a>
 
-## Vision
+<br/><br/>
 
-The original academic workflow required students to manually:
+**Visualize logic. Discover paths. Design better tests.**
 
-1. Read and understand pseudocode.
-2. Identify nodes, edges, regions, and predicate nodes.
-3. Draw a control-flow graph.
-4. Calculate cyclomatic complexity.
-5. Determine a basis set of linearly independent paths.
-6. Build a graph/adjacency matrix.
-7. Design effective test cases.
+*From algorithms to better software.*
 
-TestGraph reimagines that workflow as:
+</div>
+
+## 📌 Descripción
+
+**TestGraph** es una plataforma visual de **pruebas de caja blanca y análisis de flujo de control**. Su objetivo es transformar pseudocódigo estructurado en grafos de flujo de control interactivos, calcular complejidad ciclomática, identificar caminos linealmente independientes, generar matrices de adyacencia y apoyar el diseño de casos de prueba estructurales.
+
+El proyecto evoluciona un trabajo académico de 2024 hacia una herramienta moderna de ingeniería de software con análisis determinístico y una arquitectura preparada para crecer por fases.
+
+> 🎓 **Origen académico:** TestGraph nace a partir del proyecto final de **Fundamentos de Ingeniería de Software (ISO-300)** de la **Universidad APEC (UNAPEC)**, realizado durante el período **Septiembre - Diciembre 2024**.
+
+---
+
+## 🎓 Información académica
+
+| Información | Detalle |
+|---|---|
+| 📖 Asignatura | **Fundamentos de Ingeniería de Software (ISO-300)** |
+| 👨‍🏫 Profesor | **Leandro Eduardo Fondeur Gil** |
+| 🏫 Institución | **Universidad APEC (UNAPEC)** |
+| 📅 Período académico | **Septiembre - Diciembre 2024** |
+| 📁 Tipo de entrega | **Proyecto Final** |
+| 👥 Grupo | **#4** |
+| 📅 Entrega original | **5 de diciembre de 2024** |
+
+### 👥 Equipo académico original
+
+| 👤 Integrante | 🆔 Matrícula |
+|---|---|
+| Francis Jairo Matias Rosario | A00115261 |
+| Diego Jose Montero Almonte | A00115699 |
+| Robinson Junior Novo Lopez | A00115885 |
+| Angel Emmanuel Gonzalez Acosta | A00116360 |
+| Christian Rainel Menendez Hiciano | A00116551 |
+
+La versión moderna de **TestGraph** conserva los ejercicios académicos como escenarios de validación, pero la plataforma actual constituye una evolución técnica independiente orientada a portafolio.
+
+---
+
+## 🧭 Continuidad académica
+
+Existe una continuidad verificable por profesor con [**IngSoft Studio**](https://github.com/Jairo0811/IngSoft-Studio). **Leandro Eduardo Fondeur Gil** impartió previamente **Introducción a la Ingeniería en Software (SOF-015)** en el **Instituto Tecnológico de Las Américas (ITLA)** durante **2017-C3**, y posteriormente **Fundamentos de Ingeniería de Software (ISO-300)** en **UNAPEC** durante **Septiembre - Diciembre 2024**.
+
+| Orden | Institución | Asignatura | Proyecto | Período |
+|---:|---|---|---|---|
+| 1 | ITLA | Introducción a la Ingeniería en Software (SOF-015) | [**IngSoft Studio**](https://github.com/Jairo0811/IngSoft-Studio) | 2017-C3 |
+| 2 | UNAPEC | Fundamentos de Ingeniería de Software (ISO-300) | **TestGraph** | Septiembre - Diciembre 2024 |
+
+La relación es **docente y formativa**; ambos proyectos son aplicaciones independientes y no existe dependencia técnica entre ellos.
+
+---
+
+## 🎯 Visión
+
+El flujo académico original requería realizar manualmente:
+
+1. lectura y comprensión de pseudocódigo;
+2. identificación de nodos, aristas, regiones y nodos predicado;
+3. construcción del grafo de flujo de control;
+4. cálculo de complejidad ciclomática;
+5. identificación del conjunto base de caminos independientes;
+6. construcción de la matriz del grafo;
+7. diseño de casos de prueba efectivos.
+
+TestGraph transforma ese flujo en:
 
 ```text
 Structured Pseudocode
@@ -40,27 +103,29 @@ Control Flow Graph
 └──────────────────────────────┘
 ```
 
-## Core V1 Scope
+---
 
-- Structured pseudocode editor
-- TGPL lexer and parser
-- Abstract Syntax Tree (AST)
-- Control Flow Graph (CFG) generation
-- Interactive CFG visualization
-- Cyclomatic complexity analysis
-- Basis path analysis
-- Adjacency matrix generation
-- Manual and assisted test-case design
-- Structural coverage model
-- Academic sample projects
-- Project persistence
-- Export to PNG, CSV, and JSON
+## ✅ Alcance V1
 
-## TGPL — TestGraph Pseudocode Language
+- editor de pseudocódigo estructurado;
+- lexer y parser para TGPL;
+- Abstract Syntax Tree (AST);
+- generación del Control Flow Graph (CFG);
+- visualización interactiva del CFG;
+- cálculo de complejidad ciclomática;
+- análisis de basis paths;
+- generación de matriz de adyacencia;
+- diseño manual y asistido de casos de prueba;
+- modelo de cobertura estructural;
+- proyectos académicos de ejemplo;
+- persistencia de proyectos;
+- exportación a PNG, CSV y JSON.
 
-TestGraph V1 uses a controlled pseudocode language instead of trying to parse arbitrary natural-language pseudocode.
+---
 
-Example:
+## 🧠 TGPL — TestGraph Pseudocode Language
+
+TestGraph V1 utilizará un lenguaje de pseudocódigo controlado en lugar de intentar interpretar pseudocódigo arbitrario en lenguaje natural.
 
 ```text
 Entero edad
@@ -93,18 +158,20 @@ Sino
 Fin Si
 ```
 
-Initial language constructs:
+Construcciones iniciales:
 
-- Variable declarations: `Entero`, `Real`, `Logico`
-- Input/output: `Leer`, `Escribir`
-- Assignments: `<-`
-- Conditions: `Si`, `Sino Si`, `Sino`, `Fin Si`
-- Loops: `Mientras`, `Para`
-- Operators: `>`, `<`, `>=`, `<=`, `=`, `<>`, `Y`, `O`, `NO`
+- declaraciones: `Entero`, `Real`, `Logico`;
+- entrada/salida: `Leer`, `Escribir`;
+- asignaciones: `<-`;
+- condiciones: `Si`, `Sino Si`, `Sino`, `Fin Si`;
+- ciclos: `Mientras`, `Para`;
+- operadores: `>`, `<`, `>=`, `<=`, `=`, `<>`, `Y`, `O`, `NO`.
 
-## Analysis Engine
+---
 
-The deterministic analysis pipeline is the core of TestGraph:
+## ⚙️ Motor de análisis
+
+El núcleo de TestGraph debe permanecer determinístico:
 
 ```text
 Source Code
@@ -124,9 +191,9 @@ ControlFlowGraph
 Complexity / Paths / Matrix / Tests
 ```
 
-### Cyclomatic Complexity
+### Complejidad ciclomática
 
-For a connected control-flow graph, TestGraph will support the standard equivalent views:
+Para un grafo de flujo de control conectado se utilizarán las formulaciones equivalentes:
 
 ```text
 V(G) = E - N + 2
@@ -134,45 +201,45 @@ V(G) = P + 1
 V(G) = R
 ```
 
-Where:
+Donde:
 
-- `E` = edges
-- `N` = nodes
-- `P` = predicate nodes
-- `R` = regions
-
-The regions value is treated as the equivalent cyclomatic value rather than depending on a particular visual layout.
+- `E` = aristas;
+- `N` = nodos;
+- `P` = nodos predicado;
+- `R` = regiones.
 
 ### Basis Path Analysis
 
-The number of basis paths corresponds to the cyclomatic complexity:
+El número de caminos base corresponde a la complejidad ciclomática:
 
 ```text
 Basis Paths = V(G)
 ```
 
-Users will be able to select a path and highlight it directly on the CFG.
+La interfaz permitirá seleccionar un camino y resaltarlo directamente sobre el CFG.
 
-### Structural Coverage
+### Cobertura estructural
 
-V1 will model structural coverage without runtime instrumentation:
+V1 modelará cobertura estructural sin instrumentación runtime:
 
-- Node Coverage
-- Edge Coverage
-- Decision Coverage
-- Basis Path Coverage
+- Node Coverage;
+- Edge Coverage;
+- Decision Coverage;
+- Basis Path Coverage.
 
-## Academic Sample Projects
+---
 
-The original academic exercises are preserved as sample projects and validation scenarios for the TestGraph engine.
+## 🧪 Ejercicios académicos preservados
 
-### 1. Matrix Minimum Even
-Read a 5x3 integer matrix and determine which column contains the smallest even number.
+Los ejercicios originales se conservarán como muestras y escenarios de validación del motor:
 
-### 2. Scholarship Calculator
-Determine a scholarship amount from age and academic average.
+1. **Matrix Minimum Even** — identificar la columna con el menor número par en una matriz 5x3.
+2. **Scholarship Calculator** — calcular una beca según edad y promedio académico.
+3. **Numbers Ending in Four** — mostrar números terminados en `4` dentro de un rango.
+4. **Find Number 24** — buscar el número `24` en una matriz 4x3.
+5. **Discount Calculator** — calcular descuento según umbrales de precio.
 
-Original analysis:
+Para Scholarship Calculator, el análisis académico original documentó:
 
 ```text
 Nodes: 18
@@ -182,49 +249,64 @@ Regions: 7
 Cyclomatic Complexity: 7
 ```
 
-### 3. Numbers Ending in Four
-Read two numbers and display every number ending in `4` between them.
-
-### 4. Find Number 24
-Search for the number `24` inside a 4x3 matrix.
-
-### 5. Discount Calculator
-Calculate a discount according to price thresholds.
-
-Original rules:
+Para Discount Calculator:
 
 ```text
-price >= 200      → 15%
-price < 100       → 10%
+price >= 200       → 15%
+price < 100        → 10%
 100 <= price < 200 → 12%
 ```
 
-Original cyclomatic complexity: `3`.
+Complejidad ciclomática original: `3`.
 
-## Technology Stack
+---
 
-### Frontend
+## 🧱 Stack tecnológico objetivo
 
-- React 19
-- TypeScript
-- Vite
-- React Router
-- TanStack Query
-- React Flow
-- Monaco Editor
-- MUI
+### 🎨 Frontend
 
-### Backend
+<p>
+  <img src="https://skillicons.dev/icons?i=react,ts,vite" alt="React, TypeScript y Vite" />
+</p>
 
-- .NET 10
-- ASP.NET Core Web API
-- C#
-- Entity Framework Core
-- SQL Server
+- React 19;
+- TypeScript;
+- Vite;
+- React Router;
+- TanStack Query;
+- React Flow;
+- Monaco Editor;
+- MUI.
 
-### Architecture
+### ⚙️ Backend
 
-TestGraph will use a **Modular Monolith + Clean Architecture** approach.
+<p>
+  <img src="https://skillicons.dev/icons?i=dotnet,cs" alt=".NET y C#" />
+</p>
+
+- .NET 10;
+- ASP.NET Core Web API;
+- C#;
+- Entity Framework Core.
+
+### 🗄️ Datos y herramientas
+
+<p>
+  <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/microsoftsqlserver/microsoftsqlserver-plain.svg" alt="Microsoft SQL Server" width="52" height="52" />
+  <img src="https://skillicons.dev/icons?i=git,github,githubactions" alt="Git, GitHub y GitHub Actions" />
+</p>
+
+- Microsoft SQL Server;
+- Git / GitHub;
+- GitHub Actions.
+
+> El stack anterior corresponde a la arquitectura objetivo definida en **Fase 0**. La implementación de código comienza formalmente en **Fase 1**.
+
+---
+
+## 🏗️ Arquitectura objetivo
+
+TestGraph utilizará **Modular Monolith + Clean Architecture**.
 
 ```text
 TestGraph.sln
@@ -245,7 +327,7 @@ web/
 └── testgraph-web
 ```
 
-`TestGraph.Analysis` is the main technical differentiator and will contain:
+`TestGraph.Analysis` será el principal diferenciador técnico:
 
 ```text
 TestGraph.Analysis
@@ -259,74 +341,20 @@ TestGraph.Analysis
 └── Testing
 ```
 
-## Initial Domain Model
+---
 
-### Project
+## 🗃️ Modelo de dominio inicial
 
-```text
-Id
-Name
-Description
-CreatedAt
-UpdatedAt
-```
+Entidades base definidas para la implementación:
 
-### Analysis
+- `Project`;
+- `Analysis`;
+- `GraphNode`;
+- `GraphEdge`;
+- `ExecutionPath`;
+- `TestCase`.
 
-```text
-Id
-ProjectId
-SourceCode
-Status
-CyclomaticComplexity
-CreatedAt
-```
-
-### GraphNode
-
-```text
-Id
-AnalysisId
-NodeNumber
-Type
-Label
-SourceLine
-```
-
-### GraphEdge
-
-```text
-Id
-AnalysisId
-SourceNodeId
-TargetNodeId
-Condition
-```
-
-### ExecutionPath
-
-```text
-Id
-AnalysisId
-PathNumber
-NodeSequence
-```
-
-### TestCase
-
-```text
-Id
-AnalysisId
-Name
-Inputs
-ExpectedResult
-Technique
-LinkedPathId
-```
-
-## Authentication Strategy
-
-Initial model:
+La autenticación seguirá inicialmente el modelo:
 
 ```text
 Guest Mode
@@ -334,11 +362,13 @@ Guest Mode
 Optional Account
 ```
 
-Guests can analyze pseudocode, visualize CFGs, and try samples. Accounts will add saved projects, history, exports, and cloud persistence.
+Los invitados podrán analizar pseudocódigo y utilizar muestras; las cuentas añadirán persistencia, historial, exportaciones y almacenamiento asociado al usuario.
 
-## API Direction
+---
 
-Initial endpoints may include:
+## 🔌 Dirección de API
+
+Endpoints iniciales previstos:
 
 ```http
 POST /api/analysis/parse
@@ -348,158 +378,88 @@ POST /api/analysis/paths
 POST /api/analysis/test-cases
 ```
 
-The API can later consolidate analysis into a single endpoint:
+Posteriormente el flujo podrá consolidarse en:
 
 ```http
 POST /api/analysis
 ```
 
-## Out of Scope for V1
+---
 
-To keep the first release focused, V1 will not include:
+## 🤖 Filosofía de IA
 
-- C# source analysis
-- Java source analysis
-- JavaScript/TypeScript source analysis
-- Python source analysis
-- GitHub repository analysis
-- CI/CD integrations
-- Runtime instrumentation
-- Mutation testing
-- Load testing
-- Security testing
-- Enterprise static analysis
+La IA **no forma parte del núcleo matemático ni estructural** de TestGraph.
 
-## Future Direction
+Deben permanecer determinísticos:
 
-### V2 — Real Source Code
+- generación del CFG;
+- complejidad ciclomática;
+- análisis de caminos;
+- matrices de adyacencia.
 
-The first real programming language target will be **C#**, using Roslyn where appropriate. Later targets may include Java, JavaScript/TypeScript, and Python.
+La IA podrá incorporarse como apoyo para:
 
-### V3 — Repository Analysis
+- explicar grafos y caminos;
+- sugerir escenarios de prueba adicionales;
+- explicar complejidad elevada;
+- sugerir oportunidades de refactorización.
 
-A future version may analyze repositories and identify complex methods, for example:
+---
 
-```text
-CalculatePayment()   CC 18
-ProcessInvoice()     CC 14
-CreateUser()         CC 7
-```
+## 🚫 Fuera de alcance de V1
 
-## AI Philosophy
+- análisis directo de C#;
+- análisis de Java;
+- análisis de JavaScript/TypeScript;
+- análisis de Python;
+- análisis automático de repositorios GitHub;
+- integraciones CI/CD;
+- instrumentación runtime;
+- mutation testing;
+- load testing;
+- security testing;
+- static analysis empresarial.
 
-AI is not required for TestGraph's structural analysis.
+### Evolución futura
 
-The following must remain deterministic:
+- **V2 — Real Source Code:** primer objetivo C# con Roslyn cuando aporte valor.
+- **V3 — Repository Analysis:** análisis de métodos complejos y priorización de refactorización/pruebas.
 
-- CFG generation
-- Cyclomatic complexity
-- Path analysis
-- Adjacency matrices
+---
 
-AI may later assist with:
+## 🗺️ Roadmap
 
-- Explaining graphs and paths
-- Suggesting additional test scenarios
-- Explaining high complexity
-- Suggesting refactoring opportunities
+| Fase | Alcance | Estado |
+|---:|---|:---:|
+| 0 | Definición del producto y fundación técnica | ✅ |
+| 1 | Solution Foundation | ⏳ |
+| 2 | TGPL Lexer | ⏳ |
+| 3 | TGPL Parser + AST | ⏳ |
+| 4 | Control Flow Graph Engine | ⏳ |
+| 5 | CFG Visualization | ⏳ |
+| 6 | Cyclomatic Complexity | ⏳ |
+| 7 | Basis Path Analysis | ⏳ |
+| 8 | Adjacency Matrix | ⏳ |
+| 9 | Test Case Designer | ⏳ |
+| 10 | Assisted Test Generation | ⏳ |
+| 11 | Projects + Persistence | ⏳ |
+| 12 | Authentication | ⏳ |
+| 13 | Academic Samples | ⏳ |
+| 14 | Exports & Reports | ⏳ |
+| 15 | QA + Hardening | ⏳ |
+| 16 | Release Candidate | ⏳ |
 
-## Product Model
+---
 
-Initial positioning:
+## 📊 Estado actual
 
-- Free
-- Open source
-- Educational tool
-- Portfolio project
+**Fase 0 completada.**
 
-A future **TestGraph Cloud** could add private projects, repository analysis, team workspaces, richer reports, CI integrations, history, and analytics.
+TestGraph ya está formalmente definido como una plataforma visual de análisis de flujo de control y pruebas de caja blanca. El siguiente hito es **Fase 1 — Solution Foundation**, donde comienza la implementación del producto.
 
-## Brand Direction
+---
 
-**Primary tagline:**
-
-> Visualize logic. Discover paths. Design better tests.
-
-**Secondary message:**
-
-> From algorithms to better software.
-
-Core concepts:
-
-```text
-CONTROL FLOW • COMPLEXITY • PATHS • TEST CASES
-```
-
-Visual direction:
-
-- Deep navy
-- Electric blue
-- Cyan
-- White
-- Slate gray
-- Node-and-edge visual language
-- Technical, modern, professional software-engineering aesthetic
-
-## Academic Origins
-
-TestGraph evolved from an academic final project developed for the course **Fundamentos de Ingeniería de Software (ISO-300)** at **Universidad APEC (UNAPEC)** during the **September – December 2024** academic period.
-
-The original assignment focused on:
-
-- Control Flow Graphs
-- Cyclomatic Complexity
-- Linearly Independent Paths
-- Graph Matrices
-- Test Case Design
-
-### Original Team
-
-- **Francis Jairo Matias Rosario** — A00115261
-- **Diego Jose Montero Almonte** — A00115699
-- **Robinson Junior Novo Lopez** — A00115885
-- **Angel Emmanuel Gonzalez Acosta** — A00116360
-- **Christian Rainel Menendez Hiciano** — A00116551
-
-### Course Information
-
-- **Course:** Fundamentos de Ingeniería de Software (ISO-300)
-- **Professor:** Leandro Eduardo Fondeur Gil
-- **Academic Period:** September – December 2024
-- **Institution:** Universidad APEC (UNAPEC)
-- **Original Group:** #4
-- **Original Submission Date:** December 5, 2024
-
-## Evolution into TestGraph
-
-The original project required the team to manually build control-flow graphs, calculate cyclomatic complexity, identify independent execution paths, create graph matrices, and design test cases.
-
-TestGraph preserves those exercises as sample projects and validation scenarios while transforming the original academic workflow into an interactive engineering platform.
-
-## Roadmap
-
-- [x] **Phase 0 — Product Definition & Technical Foundation**
-- [ ] **Phase 1 — Solution Foundation**
-- [ ] **Phase 2 — TGPL Lexer**
-- [ ] **Phase 3 — TGPL Parser + AST**
-- [ ] **Phase 4 — Control Flow Graph Engine**
-- [ ] **Phase 5 — CFG Visualization**
-- [ ] **Phase 6 — Cyclomatic Complexity**
-- [ ] **Phase 7 — Basis Path Analysis**
-- [ ] **Phase 8 — Adjacency Matrix**
-- [ ] **Phase 9 — Test Case Designer**
-- [ ] **Phase 10 — Assisted Test Generation**
-- [ ] **Phase 11 — Projects + Persistence**
-- [ ] **Phase 12 — Authentication**
-- [ ] **Phase 13 — Academic Samples**
-- [ ] **Phase 14 — Exports & Reports**
-- [ ] **Phase 15 — QA + Hardening**
-- [ ] **Phase 16 — Release Candidate**
-
-## Current Status
-
-**Phase 0 is complete.**
-
-TestGraph is now formally defined as a visual control-flow and white-box testing platform rather than a collection of recreated academic exercises.
-
-The next implementation milestone is **Phase 1 — Solution Foundation**.
+<p align="center">
+  <strong>TestGraph · Visualize logic. Discover paths. Design better tests.</strong><br/>
+  Universidad APEC (UNAPEC) · Fundamentos de Ingeniería de Software (ISO-300)
+</p>
