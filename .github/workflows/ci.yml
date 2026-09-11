@@ -1,0 +1,24 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  documentation:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Validate README
+        shell: bash
+        run: |
+          test -s README.md
+          grep -q "UNAPEC" README.md
+          grep -q "ISO-300" README.md
+          grep -q "Información académica" README.md
+          grep -q "Stack tecnológico" README.md
+          grep -q "Roadmap" README.md
