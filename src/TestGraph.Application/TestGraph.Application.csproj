@@ -1,0 +1,5 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <ItemGroup>
+    <ProjectReference Include="..\TestGraph.Domain\TestGraph.Domain.csproj" />
+  </ItemGroup>
+</Project>
