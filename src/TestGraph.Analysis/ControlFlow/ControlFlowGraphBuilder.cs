@@ -143,11 +143,6 @@ public sealed class ControlFlowGraphBuilder
             AddEdge(pending.SourceId, decision.Id, FlowEdgeKind.Back, "Volver");
         }
 
-        if (statement.Statements.Count == 0)
-        {
-            AddEdge(decision.Id, decision.Id, FlowEdgeKind.Back, "Volver");
-        }
-
         return [new PendingEdge(decision.Id, FlowEdgeKind.False, "No")];
     }
 
@@ -183,11 +178,6 @@ public sealed class ControlFlowGraphBuilder
             statement.Span);
 
         ConnectPending(bodyPending, increment.Id);
-
-        if (statement.Statements.Count == 0)
-        {
-            AddEdge(decision.Id, increment.Id, FlowEdgeKind.True, "Sí");
-        }
 
         AddEdge(increment.Id, decision.Id, FlowEdgeKind.Back, "Volver");
 
