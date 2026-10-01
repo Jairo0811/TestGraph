@@ -3,7 +3,7 @@
 # TestGraph
 
 <img src="https://img.shields.io/badge/UNAPEC-ISO--300-003B70?style=for-the-badge" alt="UNAPEC ISO-300" />
-<img src="https://img.shields.io/badge/Estado-Fase%2013%20en%20revisi%C3%B3n-2563EB?style=for-the-badge" alt="Estado: Fase 13 en revisión" />
+<img src="https://img.shields.io/badge/Estado-Fase%2014%20en%20revisi%C3%B3n-2563EB?style=for-the-badge" alt="Estado: Fase 14 en revisión" />
 <img src="https://img.shields.io/badge/Tipo-Portafolio%20%7C%20Open%20Source-6F42C1?style=for-the-badge" alt="Proyecto de portafolio y open source" />
 
 <br/><br/>
@@ -444,8 +444,8 @@ La IA podrá incorporarse como apoyo para:
 | 10 | Assisted Test Generation | ✅ |
 | 11 | Projects + Persistence | ✅ |
 | 12 | Authentication | ✅ |
-| 13 | Academic Samples | 🔄 |
-| 14 | Exports & Reports | ⏳ |
+| 13 | Academic Samples | ✅ |
+| 14 | Exports & Reports | 🔄 |
 | 15 | QA + Hardening | ⏳ |
 | 16 | Release Candidate | ⏳ |
 
@@ -453,9 +453,9 @@ La IA podrá incorporarse como apoyo para:
 
 ## 📊 Estado actual
 
-**Fases 0 a 12 completadas. Fase 13 — Academic Samples en revisión.**
+**Fases 0 a 13 completadas. Fase 14 — Exports & Reports en revisión.**
 
-TestGraph ya está formalmente definido como una plataforma visual de análisis de flujo de control y pruebas de caja blanca. El siguiente hito, una vez integrada la Fase 13, es **Fase 14 — Exports & Reports**.
+TestGraph ya está formalmente definido como una plataforma visual de análisis de flujo de control y pruebas de caja blanca. El siguiente hito, una vez integrada la Fase 14, es **Fase 15 — QA + Hardening**.
 
 ---
 
