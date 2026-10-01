@@ -1,5 +1,8 @@
 <Project Sdk="Microsoft.NET.Sdk.Web">
   <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="10.0.0" />
+  </ItemGroup>
+  <ItemGroup>
     <ProjectReference Include="..\TestGraph.Application\TestGraph.Application.csproj" />
     <ProjectReference Include="..\TestGraph.Analysis\TestGraph.Analysis.csproj" />
     <ProjectReference Include="..\TestGraph.Infrastructure\TestGraph.Infrastructure.csproj" />
