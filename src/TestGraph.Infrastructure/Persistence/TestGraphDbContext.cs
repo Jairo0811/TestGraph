@@ -1,11 +1,13 @@
 using Microsoft.EntityFrameworkCore;
 using TestGraph.Domain.Projects;
+using TestGraph.Domain.Identity;
 
 namespace TestGraph.Infrastructure.Persistence;
 
 public sealed class TestGraphDbContext(DbContextOptions<TestGraphDbContext> options)
     : DbContext(options)
 {
+    public DbSet<UserAccount> Users => Set<UserAccount>();
     public DbSet<Project> Projects => Set<Project>();
     public DbSet<AnalysisRecord> Analyses => Set<AnalysisRecord>();
     public DbSet<PersistedGraphNode> GraphNodes => Set<PersistedGraphNode>();
@@ -15,6 +17,15 @@ public sealed class TestGraphDbContext(DbContextOptions<TestGraphDbContext> opti
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        modelBuilder.Entity<UserAccount>(entity =>
+        {
+            entity.ToTable("Users");
+            entity.HasKey(x => x.Id);
+            entity.HasIndex(x => x.Email).IsUnique();
+            entity.Property(x => x.Email).HasMaxLength(320).IsRequired();
+            entity.Property(x => x.PasswordHash).HasMaxLength(1000).IsRequired();
+        });
+
         modelBuilder.Entity<Project>(entity =>
         {
             entity.ToTable("Projects");
