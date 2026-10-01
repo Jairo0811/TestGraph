@@ -55,7 +55,7 @@ Node IDs and edge indexes are already deterministic from Phase 4, so repeated an
 - [x] Straight-line validation.
 - [x] Conditional validation.
 - [x] Loop validation.
-- [x] Scholarship Calculator validates seven basis paths.
+- [x] Scholarship Calculator executable TGPL flow validates eight basis paths, matching its deterministic V(G)=8.
 - [x] Deterministic ordering.
 
 ## Next

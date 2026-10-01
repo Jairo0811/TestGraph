@@ -81,10 +81,10 @@ app.UseExceptionHandler();
 
 app.Use(async (context, next) =>
 {
-    context.Response.Headers.XContentTypeOptions = "nosniff";
-    context.Response.Headers.XFrameOptions = "DENY";
-    context.Response.Headers.ReferrerPolicy = "no-referrer";
-    context.Response.Headers.ContentSecurityPolicy =
+    context.Response.Headers["X-Content-Type-Options"] = "nosniff";
+    context.Response.Headers["X-Frame-Options"] = "DENY";
+    context.Response.Headers["Referrer-Policy"] = "no-referrer";
+    context.Response.Headers["Content-Security-Policy"] =
         "default-src 'none'; frame-ancestors 'none'; base-uri 'none'";
 
     await next();

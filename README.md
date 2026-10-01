@@ -249,6 +249,8 @@ Regions: 7
 Cyclomatic Complexity: 7
 ```
 
+TestGraph conserva esos valores como referencia histórica. Al analizar el flujo TGPL preservado, el motor identifica **7 decisiones binarias** (la condición de edad más tres condiciones de promedio en cada rama), por lo que calcula determinísticamente **V(G)=8**. La diferencia queda documentada en lugar de alterar el algoritmo para forzar el resultado manual original.
+
 Para Discount Calculator:
 
 ```text

@@ -84,14 +84,14 @@ These bands are guidance for learning and prioritization, not an absolute softwa
 
 ## Academic validation
 
-The full Scholarship Calculator flow from the original ISO-300 exercise contains six predicate nodes and therefore produces:
+The original ISO-300 document reports six predicate nodes and `V(G)=7` for Scholarship Calculator. However, the preserved executable flow contains seven binary decision nodes: one age decision plus three GPA decisions in each age branch.
 
 ```text
-P = 6
-V(G) = P + 1 = 7
+P = 7
+V(G) = P + 1 = 8
 ```
 
-The automated test suite validates that the CFG-based calculation returns `7`.
+TestGraph preserves the academic value as historical context, but the deterministic CFG analyzer returns `8` for the executable TGPL sample.
 
 ## API
 
@@ -123,7 +123,7 @@ Invalid TGPL returns lexical/parser diagnostics instead of a complexity result.
 - [x] Formula consistency is reported.
 - [x] Connected-component handling is explicit.
 - [x] Educational complexity levels are available.
-- [x] Full Scholarship Calculator sample validates `V(G) = 7`.
+- [x] Full Scholarship Calculator executable sample validates `V(G) = 8`, with the original reported `7` documented as an academic discrepancy.
 - [x] Straight-line, conditional, while, for and nested flows are tested.
 - [x] Complexity API endpoint is available.
 - [x] Invalid TGPL produces diagnostics rather than misleading metrics.

@@ -77,7 +77,7 @@ public sealed class CyclomaticComplexityAnalyzerTests
     }
 
     [Fact]
-    public void Analyze_FullAcademicScholarshipFlow_ReturnsSeven()
+    public void Analyze_FullAcademicScholarshipFlow_ReturnsEight()
     {
         var graph = BuildGraph("""
             Entero edad
@@ -114,10 +114,10 @@ public sealed class CyclomaticComplexityAnalyzerTests
 
         var result = new CyclomaticComplexityAnalyzer().Analyze(graph);
 
-        Assert.Equal(7, result.Value);
-        Assert.Equal(6, result.PredicateNodeCount);
-        Assert.Equal(7, result.PredicateComplexity);
-        Assert.Equal(7, result.RegionCount);
+        Assert.Equal(8, result.Value);
+        Assert.Equal(7, result.PredicateNodeCount);
+        Assert.Equal(8, result.PredicateComplexity);
+        Assert.Equal(8, result.RegionCount);
         Assert.Equal(ComplexityLevel.Moderate, result.Level);
         Assert.True(result.FormulasAgree);
     }

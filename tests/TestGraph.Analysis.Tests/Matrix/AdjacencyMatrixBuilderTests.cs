@@ -35,7 +35,7 @@ public sealed class AdjacencyMatrixBuilderTests
             """);
 
         var matrix = new AdjacencyMatrixBuilder().Build(graph);
-        var decision = Assert.Single(graph.Nodes.Where(node => node.Kind == FlowNodeKind.Decision));
+        var decision = Assert.Single(graph.Nodes, node => node.Kind == FlowNodeKind.Decision);
         var row = matrix.NodeIds.IndexOf(decision.Id);
 
         Assert.Equal(2, matrix.Rows[row].Count(value => value > 0));
@@ -51,7 +51,7 @@ public sealed class AdjacencyMatrixBuilderTests
             """);
 
         var matrix = new AdjacencyMatrixBuilder().Build(graph);
-        var back = Assert.Single(graph.Edges.Where(edge => edge.Kind == FlowEdgeKind.Back));
+        var back = Assert.Single(graph.Edges, edge => edge.Kind == FlowEdgeKind.Back);
         var row = matrix.NodeIds.IndexOf(back.SourceId);
         var column = matrix.NodeIds.IndexOf(back.TargetId);
 

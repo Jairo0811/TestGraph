@@ -45,8 +45,8 @@ public sealed class ControlFlowGraphBuilderTests
 
         var graph = new ControlFlowGraphBuilder().Build(parse.Root);
 
-        var decision = Assert.Single(graph.Nodes.Where(node => node.Kind == FlowNodeKind.Decision));
-        var merge = Assert.Single(graph.Nodes.Where(node => node.Kind == FlowNodeKind.Merge));
+        var decision = Assert.Single(graph.Nodes, node => node.Kind == FlowNodeKind.Decision);
+        var merge = Assert.Single(graph.Nodes, node => node.Kind == FlowNodeKind.Merge);
 
         Assert.Contains(graph.Edges, edge =>
             edge.SourceId == decision.Id && edge.Kind == FlowEdgeKind.True);
@@ -78,7 +78,7 @@ public sealed class ControlFlowGraphBuilderTests
         var graph = new ControlFlowGraphBuilder().Build(parse.Root);
 
         Assert.Equal(3, graph.Nodes.Count(node => node.Kind == FlowNodeKind.Decision));
-        Assert.Single(graph.Nodes.Where(node => node.Kind == FlowNodeKind.Merge));
+        Assert.Single(graph.Nodes, node => node.Kind == FlowNodeKind.Merge);
         Assert.Equal(3, graph.Edges.Count(edge => edge.Kind == FlowEdgeKind.True));
         Assert.Equal(3, graph.Edges.Count(edge => edge.Kind == FlowEdgeKind.False));
     }
@@ -98,8 +98,8 @@ public sealed class ControlFlowGraphBuilderTests
 
         var graph = new ControlFlowGraphBuilder().Build(parse.Root);
 
-        var decision = Assert.Single(graph.Nodes.Where(node => node.Kind == FlowNodeKind.Decision));
-        var backEdge = Assert.Single(graph.Edges.Where(edge => edge.Kind == FlowEdgeKind.Back));
+        var decision = Assert.Single(graph.Nodes, node => node.Kind == FlowNodeKind.Decision);
+        var backEdge = Assert.Single(graph.Edges, edge => edge.Kind == FlowEdgeKind.Back);
 
         Assert.Equal(decision.Id, backEdge.TargetId);
         Assert.Contains(graph.Edges, edge =>
@@ -123,7 +123,7 @@ public sealed class ControlFlowGraphBuilderTests
         Assert.Contains(graph.Nodes, node => node.Label == "i = 1");
         Assert.Contains(graph.Nodes, node => node.Label == "i <= 5");
         Assert.Contains(graph.Nodes, node => node.Label == "i += 2");
-        Assert.Single(graph.Edges.Where(edge => edge.Kind == FlowEdgeKind.Back));
+        Assert.Single(graph.Edges, edge => edge.Kind == FlowEdgeKind.Back);
     }
 
     [Fact]
