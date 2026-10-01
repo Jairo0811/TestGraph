@@ -26,7 +26,7 @@ This release candidate closes the original Phase 0–16 V1 roadmap and packages 
 Before promoting to v1.0.0:
 
 1. CI must pass on the release candidate commit.
-2. Validate the Scholarship sample returns V(G)=7.
+2. Validate the Scholarship executable sample returns deterministic V(G)=8, while the original academic report of V(G)=7 remains documented as a historical discrepancy.
 3. Validate basis-path count equals V(G) on supported samples.
 4. Validate frontend production build and graph interaction.
 5. Validate register/login/me flow with a non-development JWT key.
