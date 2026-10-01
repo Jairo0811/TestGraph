@@ -103,6 +103,7 @@ export default function ControlFlowGraphViewer({ graph }: ControlFlowGraphViewer
       </Stack>
 
       <Paper
+        data-testid="cfg-canvas"
         variant="outlined"
         sx={{
           height: { xs: 620, md: 760 },
