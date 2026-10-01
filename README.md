@@ -3,7 +3,7 @@
 # TestGraph
 
 <img src="https://img.shields.io/badge/UNAPEC-ISO--300-003B70?style=for-the-badge" alt="UNAPEC ISO-300" />
-<img src="https://img.shields.io/badge/Estado-Fase%200%20completada-2563EB?style=for-the-badge" alt="Estado: Fase 0 completada" />
+<img src="https://img.shields.io/badge/Estado-Fase%203%20en%20revisi%C3%B3n-2563EB?style=for-the-badge" alt="Estado: Fase 3 en revisión" />
 <img src="https://img.shields.io/badge/Tipo-Portafolio%20%7C%20Open%20Source-6F42C1?style=for-the-badge" alt="Proyecto de portafolio y open source" />
 
 <br/><br/>
@@ -432,9 +432,9 @@ La IA podrá incorporarse como apoyo para:
 | Fase | Alcance | Estado |
 |---:|---|:---:|
 | 0 | Definición del producto y fundación técnica | ✅ |
-| 1 | Solution Foundation | ⏳ |
-| 2 | TGPL Lexer | ⏳ |
-| 3 | TGPL Parser + AST | ⏳ |
+| 1 | Solution Foundation | ✅ |
+| 2 | TGPL Lexer | ✅ |
+| 3 | TGPL Parser + AST | 🔄 |
 | 4 | Control Flow Graph Engine | ⏳ |
 | 5 | CFG Visualization | ⏳ |
 | 6 | Cyclomatic Complexity | ⏳ |
@@ -453,9 +453,9 @@ La IA podrá incorporarse como apoyo para:
 
 ## 📊 Estado actual
 
-**Fase 0 completada.**
+**Fases 0, 1 y 2 completadas. Fase 3 — TGPL Parser + AST en revisión.**
 
-TestGraph ya está formalmente definido como una plataforma visual de análisis de flujo de control y pruebas de caja blanca. El siguiente hito es **Fase 1 — Solution Foundation**, donde comienza la implementación del producto.
+TestGraph ya está formalmente definido como una plataforma visual de análisis de flujo de control y pruebas de caja blanca. El siguiente hito, una vez integrada la Fase 3, es **Fase 4 — Control Flow Graph Engine**.
 
 ---
 
