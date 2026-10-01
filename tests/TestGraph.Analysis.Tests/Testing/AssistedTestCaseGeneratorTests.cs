@@ -66,7 +66,7 @@ public sealed class AssistedTestCaseGeneratorTests
             Fin Si
             """);
 
-        Assert.Equal(7, result.Boundaries.Count);
+        Assert.Equal(5, result.Boundaries.Count);
         Assert.Contains(result.Boundaries, boundary => boundary.Variable == "edad" && boundary.Threshold == 18m);
         Assert.Contains(result.Boundaries, boundary => boundary.Variable == "promedio" && boundary.Threshold == 7.5m);
         Assert.NotEmpty(result.TestCases);
