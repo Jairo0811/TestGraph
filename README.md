@@ -3,7 +3,7 @@
 # TestGraph
 
 <img src="https://img.shields.io/badge/UNAPEC-ISO--300-003B70?style=for-the-badge" alt="UNAPEC ISO-300" />
-<img src="https://img.shields.io/badge/Estado-Fase%208%20en%20revisi%C3%B3n-2563EB?style=for-the-badge" alt="Estado: Fase 8 en revisión" />
+<img src="https://img.shields.io/badge/Estado-Fase%209%20en%20revisi%C3%B3n-2563EB?style=for-the-badge" alt="Estado: Fase 9 en revisión" />
 <img src="https://img.shields.io/badge/Tipo-Portafolio%20%7C%20Open%20Source-6F42C1?style=for-the-badge" alt="Proyecto de portafolio y open source" />
 
 <br/><br/>
@@ -439,8 +439,8 @@ La IA podrá incorporarse como apoyo para:
 | 5 | CFG Visualization | ✅ |
 | 6 | Cyclomatic Complexity | ✅ |
 | 7 | Basis Path Analysis | ✅ |
-| 8 | Adjacency Matrix | 🔄 |
-| 9 | Test Case Designer | ⏳ |
+| 8 | Adjacency Matrix | ✅ |
+| 9 | Test Case Designer | 🔄 |
 | 10 | Assisted Test Generation | ⏳ |
 | 11 | Projects + Persistence | ⏳ |
 | 12 | Authentication | ⏳ |
@@ -453,9 +453,9 @@ La IA podrá incorporarse como apoyo para:
 
 ## 📊 Estado actual
 
-**Fases 0 a 7 completadas. Fase 8 — Adjacency Matrix en revisión.**
+**Fases 0 a 8 completadas. Fase 9 — Test Case Designer en revisión.**
 
-TestGraph ya está formalmente definido como una plataforma visual de análisis de flujo de control y pruebas de caja blanca. El siguiente hito, una vez integrada la Fase 8, es **Fase 9 — Test Case Designer**.
+TestGraph ya está formalmente definido como una plataforma visual de análisis de flujo de control y pruebas de caja blanca. El siguiente hito, una vez integrada la Fase 9, es **Fase 10 — Assisted Test Generation**.
 
 ---
 
