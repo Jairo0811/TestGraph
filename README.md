@@ -3,7 +3,7 @@
 # TestGraph
 
 <img src="https://img.shields.io/badge/UNAPEC-ISO--300-003B70?style=for-the-badge" alt="UNAPEC ISO-300" />
-<img src="https://img.shields.io/badge/Estado-Fase%205%20en%20revisi%C3%B3n-2563EB?style=for-the-badge" alt="Estado: Fase 5 en revisión" />
+<img src="https://img.shields.io/badge/Estado-Fase%206%20en%20revisi%C3%B3n-2563EB?style=for-the-badge" alt="Estado: Fase 6 en revisión" />
 <img src="https://img.shields.io/badge/Tipo-Portafolio%20%7C%20Open%20Source-6F42C1?style=for-the-badge" alt="Proyecto de portafolio y open source" />
 
 <br/><br/>
@@ -436,8 +436,8 @@ La IA podrá incorporarse como apoyo para:
 | 2 | TGPL Lexer | ✅ |
 | 3 | TGPL Parser + AST | ✅ |
 | 4 | Control Flow Graph Engine | ✅ |
-| 5 | CFG Visualization | 🔄 |
-| 6 | Cyclomatic Complexity | ⏳ |
+| 5 | CFG Visualization | ✅ |
+| 6 | Cyclomatic Complexity | 🔄 |
 | 7 | Basis Path Analysis | ⏳ |
 | 8 | Adjacency Matrix | ⏳ |
 | 9 | Test Case Designer | ⏳ |
@@ -453,9 +453,9 @@ La IA podrá incorporarse como apoyo para:
 
 ## 📊 Estado actual
 
-**Fases 0, 1, 2, 3 y 4 completadas. Fase 5 — CFG Visualization en revisión.**
+**Fases 0, 1, 2, 3, 4 y 5 completadas. Fase 6 — Cyclomatic Complexity en revisión.**
 
-TestGraph ya está formalmente definido como una plataforma visual de análisis de flujo de control y pruebas de caja blanca. El siguiente hito, una vez integrada la Fase 5, es **Fase 6 — Cyclomatic Complexity**.
+TestGraph ya está formalmente definido como una plataforma visual de análisis de flujo de control y pruebas de caja blanca. El siguiente hito, una vez integrada la Fase 6, es **Fase 7 — Basis Path Analysis**.
 
 ---
 
