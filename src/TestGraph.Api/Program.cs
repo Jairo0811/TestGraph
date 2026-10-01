@@ -50,6 +50,7 @@ app.UseCors("Frontend");
 app.MapAnalysisEndpoints();
 app.MapProjectEndpoints();
 app.MapAuthenticationEndpoints();
+app.MapSampleEndpoints();
 
 app.MapGet("/api/health", () => Results.Ok(new
 {
