@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using System.Security.Claims;
 using System.Text.Json;
 using TestGraph.Analysis.Complexity;
 using TestGraph.Analysis.ControlFlow;
@@ -13,9 +14,15 @@ public static class ProjectEndpoints
 {
     public static IEndpointRouteBuilder MapProjectEndpoints(this IEndpointRouteBuilder endpoints)
     {
-        endpoints.MapGet("/api/projects", async (TestGraphDbContext db, CancellationToken ct) =>
-            Results.Ok(await db.Projects
+        var group = endpoints.MapGroup("/api/projects").RequireAuthorization();
+
+        group.MapGet("", async (ClaimsPrincipal principal, TestGraphDbContext db, CancellationToken ct) =>
+        {
+            var userId = GetUserId(principal);
+
+            return Results.Ok(await db.Projects
                 .AsNoTracking()
+                .Where(project => project.OwnerUserId == userId)
                 .OrderByDescending(project => project.UpdatedAt)
                 .Select(project => new
                 {
@@ -26,35 +33,52 @@ public static class ProjectEndpoints
                     project.UpdatedAt,
                     analysisCount = project.Analyses.Count
                 })
-                .ToListAsync(ct)));
-
-        endpoints.MapPost("/api/projects", async (CreateProjectRequest request, TestGraphDbContext db, CancellationToken ct) =>
-        {
-            var project = new Project(Guid.NewGuid(), request.Name, request.Description);
-            db.Projects.Add(project);
-            await db.SaveChangesAsync(ct);
-            return Results.Created($"/api/projects/{project.Id}", new { project.Id, project.Name, project.Description });
+                .ToListAsync(ct));
         });
 
-        endpoints.MapGet("/api/projects/{id:guid}", async (Guid id, TestGraphDbContext db, CancellationToken ct) =>
-        {
-            var project = await db.Projects
-                .AsNoTracking()
-                .Include(project => project.Analyses)
-                .SingleOrDefaultAsync(project => project.Id == id, ct);
-
-            return project is null
-                ? Results.NotFound()
-                : Results.Ok(project);
-        });
-
-        endpoints.MapPost("/api/projects/{id:guid}/analyses", async (
-            Guid id,
-            SaveAnalysisRequest request,
+        group.MapPost("", async (
+            CreateProjectRequest request,
+            ClaimsPrincipal principal,
             TestGraphDbContext db,
             CancellationToken ct) =>
         {
-            var projectExists = await db.Projects.AnyAsync(project => project.Id == id, ct);
+            var userId = GetUserId(principal);
+            var project = new Project(Guid.NewGuid(), userId, request.Name, request.Description);
+            db.Projects.Add(project);
+            await db.SaveChangesAsync(ct);
+
+            return Results.Created(
+                $"/api/projects/{project.Id}",
+                new { project.Id, project.Name, project.Description });
+        });
+
+        group.MapGet("/{id:guid}", async (
+            Guid id,
+            ClaimsPrincipal principal,
+            TestGraphDbContext db,
+            CancellationToken ct) =>
+        {
+            var userId = GetUserId(principal);
+            var project = await db.Projects
+                .AsNoTracking()
+                .Include(project => project.Analyses)
+                .SingleOrDefaultAsync(project => project.Id == id && project.OwnerUserId == userId, ct);
+
+            return project is null ? Results.NotFound() : Results.Ok(project);
+        });
+
+        group.MapPost("/{id:guid}/analyses", async (
+            Guid id,
+            SaveAnalysisRequest request,
+            ClaimsPrincipal principal,
+            TestGraphDbContext db,
+            CancellationToken ct) =>
+        {
+            var userId = GetUserId(principal);
+            var projectExists = await db.Projects.AnyAsync(
+                project => project.Id == id && project.OwnerUserId == userId,
+                ct);
+
             if (!projectExists)
             {
                 return Results.NotFound(new { error = "Project not found." });
@@ -124,12 +148,23 @@ public static class ProjectEndpoints
                 });
         });
 
-        endpoints.MapGet("/api/projects/{projectId:guid}/analyses/{analysisId:guid}", async (
+        group.MapGet("/{projectId:guid}/analyses/{analysisId:guid}", async (
             Guid projectId,
             Guid analysisId,
+            ClaimsPrincipal principal,
             TestGraphDbContext db,
             CancellationToken ct) =>
         {
+            var userId = GetUserId(principal);
+            var ownsProject = await db.Projects.AnyAsync(
+                project => project.Id == projectId && project.OwnerUserId == userId,
+                ct);
+
+            if (!ownsProject)
+            {
+                return Results.NotFound();
+            }
+
             var analysis = await db.Analyses
                 .AsNoTracking()
                 .Include(item => item.GraphNodes)
@@ -142,6 +177,14 @@ public static class ProjectEndpoints
         });
 
         return endpoints;
+    }
+
+    private static Guid GetUserId(ClaimsPrincipal principal)
+    {
+        var raw = principal.FindFirstValue(ClaimTypes.NameIdentifier);
+        return Guid.TryParse(raw, out var id)
+            ? id
+            : throw new InvalidOperationException("Authenticated user identifier is missing.");
     }
 }
 
