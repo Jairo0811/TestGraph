@@ -6,6 +6,7 @@ import AdjacencyMatrixPanel from './features/matrix/AdjacencyMatrixPanel'
 import TestCaseDesignerPanel from './features/testing/TestCaseDesignerPanel'
 import AssistedTestSuggestionsPanel from './features/testing/AssistedTestSuggestionsPanel'
 import AcademicSamplesPanel from './features/samples/AcademicSamplesPanel'
+import ExportPanel from './features/export/ExportPanel'
 
 const modules = [
   'TGPL Lexer',
@@ -75,6 +76,7 @@ export default function App() {
         <TestCaseDesignerPanel />
         <AssistedTestSuggestionsPanel />
         <AcademicSamplesPanel />
+        <ExportPanel graph={scholarshipGraph} />
       </Stack>
     </Container>
   )
