@@ -60,7 +60,7 @@ public sealed class BasisPathAnalyzerTests
     }
 
     [Fact]
-    public void Analyze_ScholarshipFlow_ReturnsSevenPaths()
+    public void Analyze_ScholarshipFlow_ReturnsEightPaths()
     {
         var graph = BuildGraph("""
             Entero edad
@@ -95,8 +95,8 @@ public sealed class BasisPathAnalyzerTests
 
         var result = new BasisPathAnalyzer().Analyze(graph);
 
-        Assert.Equal(7, result.CyclomaticComplexity);
-        Assert.Equal(7, result.Paths.Count);
+        Assert.Equal(8, result.CyclomaticComplexity);
+        Assert.Equal(8, result.Paths.Count);
         Assert.True(result.IsComplete);
         Assert.All(result.Paths, path =>
         {
