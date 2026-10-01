@@ -3,6 +3,7 @@ using TestGraph.Analysis.ControlFlow;
 using TestGraph.Analysis.Parsing;
 using TestGraph.Analysis.Paths;
 using TestGraph.Analysis.Matrix;
+using TestGraph.Analysis.Testing;
 
 namespace TestGraph.Api;
 
@@ -120,8 +121,55 @@ public static class AnalysisEndpoints
             });
         });
 
+        endpoints.MapPost("/api/analysis/test-cases/design", (TestCaseDesignRequest request) =>
+        {
+            if (string.IsNullOrWhiteSpace(request.SourceCode))
+            {
+                return Results.BadRequest(new { error = "SourceCode is required." });
+            }
+
+            var parseResult = Parser.Parse(request.SourceCode);
+            if (parseResult.HasErrors)
+            {
+                return Results.BadRequest(new
+                {
+                    error = "TGPL source contains lexical or parser errors.",
+                    lexerDiagnostics = parseResult.LexerDiagnostics,
+                    parserDiagnostics = parseResult.Diagnostics
+                });
+            }
+
+            var graph = new ControlFlowGraphBuilder().Build(parseResult.Root);
+            var paths = new BasisPathAnalyzer().Analyze(graph).Paths;
+            var drafts = new List<TestCaseDraft>();
+
+            foreach (var item in request.TestCases)
+            {
+                if (!Enum.TryParse<TestCaseTechnique>(item.Technique, true, out var technique))
+                {
+                    return Results.BadRequest(new
+                    {
+                        error = $"Unknown test-case technique '{item.Technique}'."
+                    });
+                }
+
+                drafts.Add(new TestCaseDraft(
+                    item.Name,
+                    item.Inputs ?? new Dictionary<string, string>(),
+                    item.ExpectedResult,
+                    technique,
+                    item.LinkedPathNumber));
+            }
+
+            var result = new TestCaseDesigner().Design(paths, drafts);
+            return Results.Ok(result);
+        });
+
         return endpoints;
     }
 }
 
 public sealed record ComplexityRequest(string SourceCode);
+
+public sealed record TestCaseDesignRequest(string SourceCode, IReadOnlyList<TestCaseDraftRequest> TestCases);
+public sealed record TestCaseDraftRequest(string Name, IReadOnlyDictionary<string, string>? Inputs, string ExpectedResult, string Technique, int? LinkedPathNumber);
