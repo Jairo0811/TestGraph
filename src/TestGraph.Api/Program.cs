@@ -51,6 +51,7 @@ app.MapAnalysisEndpoints();
 app.MapProjectEndpoints();
 app.MapAuthenticationEndpoints();
 app.MapSampleEndpoints();
+app.MapExportEndpoints();
 
 app.MapGet("/api/health", () => Results.Ok(new
 {
