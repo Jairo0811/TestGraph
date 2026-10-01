@@ -54,8 +54,9 @@ public static class AcademicSampleCatalog
 
             Escribir beca
             """,
-            7,
-            true),
+            8,
+            true,
+            "The original academic document reports V(G)=7, but the preserved TGPL flow contains seven binary decision nodes; TestGraph deterministically computes V(G)=8."),
 
         new(
             "terminal-4",
