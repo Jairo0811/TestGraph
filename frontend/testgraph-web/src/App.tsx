@@ -2,6 +2,7 @@ import { Box, Chip, Container, Paper, Stack, Typography } from '@mui/material'
 import AccountTreeOutlinedIcon from '@mui/icons-material/AccountTreeOutlined'
 import ControlFlowGraphViewer from './features/control-flow/ControlFlowGraphViewer'
 import { scholarshipGraph } from './features/control-flow/sampleGraph'
+import AdjacencyMatrixPanel from './features/matrix/AdjacencyMatrixPanel'
 
 const modules = [
   'TGPL Lexer',
@@ -67,6 +68,7 @@ export default function App() {
         </Paper>
 
         <ControlFlowGraphViewer graph={scholarshipGraph} />
+        <AdjacencyMatrixPanel graph={scholarshipGraph} />
       </Stack>
     </Container>
   )
