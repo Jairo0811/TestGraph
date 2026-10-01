@@ -65,20 +65,20 @@ public static class AcademicSampleCatalog
             "Muestra números terminados en 4 dentro de un rango.",
             """
             Entero inicio
-            Entero fin
+            Entero limite
             Entero numero
 
             Leer inicio
-            Leer fin
+            Leer limite
 
-            Si inicio > fin Entonces
+            Si inicio > limite Entonces
                 numero <- inicio
-                inicio <- fin
-                fin <- numero
+                inicio <- limite
+                limite <- numero
             Fin Si
 
             numero <- inicio
-            Mientras numero <= fin Hacer
+            Mientras numero <= limite Hacer
                 Si numero % 10 = 4 Entonces
                     Escribir numero
                 Fin Si
