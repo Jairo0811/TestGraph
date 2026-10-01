@@ -1,8 +1,10 @@
 using TestGraph.Api;
+using TestGraph.Infrastructure.Persistence;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddProblemDetails();
+builder.Services.AddTestGraphPersistence(builder.Configuration);
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("Frontend", policy =>
@@ -17,6 +19,7 @@ app.UseExceptionHandler();
 app.UseCors("Frontend");
 
 app.MapAnalysisEndpoints();
+app.MapProjectEndpoints();
 
 app.MapGet("/api/health", () => Results.Ok(new
 {
