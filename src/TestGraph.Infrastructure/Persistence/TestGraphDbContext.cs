@@ -31,6 +31,7 @@ public sealed class TestGraphDbContext(DbContextOptions<TestGraphDbContext> opti
             entity.ToTable("Projects");
             entity.HasKey(x => x.Id);
             entity.Property(x => x.Name).HasMaxLength(160).IsRequired();
+            entity.HasIndex(x => x.OwnerUserId);
             entity.Property(x => x.Description).HasMaxLength(1000);
             entity.HasMany(x => x.Analyses)
                 .WithOne(x => x.Project)
