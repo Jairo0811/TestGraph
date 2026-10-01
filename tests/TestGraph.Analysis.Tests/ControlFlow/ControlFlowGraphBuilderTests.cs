@@ -45,8 +45,8 @@ public sealed class ControlFlowGraphBuilderTests
 
         var graph = new ControlFlowGraphBuilder().Build(parse.Root);
 
-        var decision = Assert.Single(graph.Nodes.Where(node => node.Kind == FlowNodeKind.Decision));
-        var merge = Assert.Single(graph.Nodes.Where(node => node.Kind == FlowNodeKind.Merge));
+        var decision = Assert.Single(graph.Nodes, node => node.Kind == FlowNodeKind.Decision);
+        var merge = Assert.Single(graph.Nodes, node => node.Kind == FlowNodeKind.Merge);
 
         Assert.Contains(graph.Edges, edge =>
             edge.SourceId == decision.Id && edge.Kind == FlowEdgeKind.True);
@@ -99,7 +99,7 @@ public sealed class ControlFlowGraphBuilderTests
         var graph = new ControlFlowGraphBuilder().Build(parse.Root);
 
         var decision = Assert.Single(graph.Nodes.Where(node => node.Kind == FlowNodeKind.Decision));
-        var backEdge = Assert.Single(graph.Edges.Where(edge => edge.Kind == FlowEdgeKind.Back));
+        var backEdge = Assert.Single(graph.Edges, edge => edge.Kind == FlowEdgeKind.Back);
 
         Assert.Equal(decision.Id, backEdge.TargetId);
         Assert.Contains(graph.Edges, edge =>
