@@ -105,7 +105,7 @@ app.MapGet("/api/health", () => Results.Ok(new
 {
     service = "TestGraph.Api",
     status = "ok",
-    version = "0.1.0"
+    version = "1.0.0-rc.1"
 }));
 
 app.Run();
