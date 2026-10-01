@@ -2,6 +2,7 @@ using TestGraph.Analysis.Complexity;
 using TestGraph.Analysis.ControlFlow;
 using TestGraph.Analysis.Parsing;
 using TestGraph.Analysis.Paths;
+using TestGraph.Analysis.Matrix;
 
 namespace TestGraph.Api;
 
@@ -87,6 +88,35 @@ public static class AnalysisEndpoints
                     edgeIndexes = path.EdgeIndexes,
                     display = path.Display
                 })
+            });
+        });
+
+        endpoints.MapPost("/api/analysis/matrix", (ComplexityRequest request) =>
+        {
+            if (string.IsNullOrWhiteSpace(request.SourceCode))
+            {
+                return Results.BadRequest(new { error = "SourceCode is required." });
+            }
+
+            var parseResult = Parser.Parse(request.SourceCode);
+            if (parseResult.HasErrors)
+            {
+                return Results.BadRequest(new
+                {
+                    error = "TGPL source contains lexical or parser errors.",
+                    lexerDiagnostics = parseResult.LexerDiagnostics,
+                    parserDiagnostics = parseResult.Diagnostics
+                });
+            }
+
+            var graph = new ControlFlowGraphBuilder().Build(parseResult.Root);
+            var matrix = new AdjacencyMatrixBuilder().Build(graph);
+
+            return Results.Ok(new
+            {
+                nodeIds = matrix.NodeIds,
+                rows = matrix.Rows,
+                size = matrix.Size
             });
         });
 
