@@ -165,6 +165,28 @@ public static class AnalysisEndpoints
             return Results.Ok(result);
         });
 
+        endpoints.MapPost("/api/analysis/test-cases/suggest", (ComplexityRequest request) =>
+        {
+            if (string.IsNullOrWhiteSpace(request.SourceCode))
+            {
+                return Results.BadRequest(new { error = "SourceCode is required." });
+            }
+
+            var parseResult = Parser.Parse(request.SourceCode);
+            if (parseResult.HasErrors)
+            {
+                return Results.BadRequest(new
+                {
+                    error = "TGPL source contains lexical or parser errors.",
+                    lexerDiagnostics = parseResult.LexerDiagnostics,
+                    parserDiagnostics = parseResult.Diagnostics
+                });
+            }
+
+            var result = new AssistedTestCaseGenerator().Generate(parseResult.Root);
+            return Results.Ok(result);
+        });
+
         return endpoints;
     }
 }
