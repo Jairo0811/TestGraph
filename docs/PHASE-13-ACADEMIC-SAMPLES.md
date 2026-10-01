@@ -30,7 +30,7 @@ The limitation is explicit rather than silently rewriting the original matrix ex
 
 Analyzer-ready samples are parsed and analyzed in automated tests.
 
-The Scholarship Calculator validates V(G)=7.
+The original Scholarship Calculator document reports V(G)=7, while the preserved executable TGPL flow contains seven binary decisions and deterministically validates V(G)=8. The discrepancy is preserved explicitly rather than forcing the engine to reproduce the inconsistent manual count.
 The Discount Calculator validates V(G)=3.
 
 The Numbers Ending in Four sample is analyzed from the generated CFG. The original academic document contains an internal inconsistency in its complexity calculation, so TestGraph treats its own deterministic CFG result as the executable sample result.
