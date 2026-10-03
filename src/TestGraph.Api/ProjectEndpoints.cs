@@ -42,6 +42,11 @@ public static class ProjectEndpoints
             TestGraphDbContext db,
             CancellationToken ct) =>
         {
+            if (string.IsNullOrWhiteSpace(request.Name))
+            {
+                return Results.BadRequest(new { error = "Project name is required." });
+            }
+
             var userId = GetUserId(principal);
             var project = new Project(Guid.NewGuid(), userId, request.Name, request.Description);
             db.Projects.Add(project);
@@ -61,8 +66,25 @@ public static class ProjectEndpoints
             var userId = GetUserId(principal);
             var project = await db.Projects
                 .AsNoTracking()
-                .Include(project => project.Analyses)
-                .SingleOrDefaultAsync(project => project.Id == id && project.OwnerUserId == userId, ct);
+                .Where(item => item.Id == id && item.OwnerUserId == userId)
+                .Select(item => new
+                {
+                    item.Id,
+                    item.Name,
+                    item.Description,
+                    item.CreatedAt,
+                    item.UpdatedAt,
+                    analyses = item.Analyses
+                        .OrderByDescending(analysis => analysis.CreatedAt)
+                        .Select(analysis => new
+                        {
+                            analysis.Id,
+                            analysis.CyclomaticComplexity,
+                            analysis.CreatedAt
+                        })
+                        .ToList()
+                })
+                .SingleOrDefaultAsync(ct);
 
             return project is null ? Results.NotFound() : Results.Ok(project);
         });
@@ -82,6 +104,11 @@ public static class ProjectEndpoints
             if (!projectExists)
             {
                 return Results.NotFound(new { error = "Project not found." });
+            }
+
+            if (string.IsNullOrWhiteSpace(request.SourceCode))
+            {
+                return Results.BadRequest(new { error = "SourceCode is required." });
             }
 
             var parseResult = Parser.Parse(request.SourceCode);
@@ -133,6 +160,23 @@ public static class ProjectEndpoints
                     JsonSerializer.Serialize(path.NodeIds)));
             }
 
+            foreach (var testCase in request.TestCases ?? [])
+            {
+                if (string.IsNullOrWhiteSpace(testCase.Name) || string.IsNullOrWhiteSpace(testCase.ExpectedResult))
+                {
+                    return Results.BadRequest(new { error = "Persisted test cases require name and expectedResult." });
+                }
+
+                db.TestCases.Add(new PersistedTestCase(
+                    Guid.NewGuid(),
+                    analysis.Id,
+                    testCase.Name.Trim(),
+                    JsonSerializer.Serialize(testCase.Inputs ?? new Dictionary<string, string>()),
+                    testCase.ExpectedResult.Trim(),
+                    string.IsNullOrWhiteSpace(testCase.Technique) ? "Manual" : testCase.Technique.Trim(),
+                    testCase.LinkedPathNumber));
+            }
+
             await db.SaveChangesAsync(ct);
 
             return Results.Created(
@@ -144,7 +188,8 @@ public static class ProjectEndpoints
                     analysis.CyclomaticComplexity,
                     nodes = graph.Nodes.Count,
                     edges = graph.Edges.Count,
-                    paths = paths.Paths.Count
+                    paths = paths.Paths.Count,
+                    testCases = request.TestCases?.Count ?? 0
                 });
         });
 
@@ -167,11 +212,55 @@ public static class ProjectEndpoints
 
             var analysis = await db.Analyses
                 .AsNoTracking()
-                .Include(item => item.GraphNodes)
-                .Include(item => item.GraphEdges)
-                .Include(item => item.ExecutionPaths)
-                .Include(item => item.TestCases)
-                .SingleOrDefaultAsync(item => item.ProjectId == projectId && item.Id == analysisId, ct);
+                .Where(item => item.ProjectId == projectId && item.Id == analysisId)
+                .Select(item => new
+                {
+                    item.Id,
+                    item.ProjectId,
+                    item.SourceCode,
+                    item.CyclomaticComplexity,
+                    item.CreatedAt,
+                    graphNodes = item.GraphNodes
+                        .OrderBy(node => node.NodeNumber)
+                        .Select(node => new
+                        {
+                            node.NodeNumber,
+                            node.Type,
+                            node.Label,
+                            node.SourceLine
+                        })
+                        .ToList(),
+                    graphEdges = item.GraphEdges
+                        .OrderBy(edge => edge.SourceNodeNumber)
+                        .ThenBy(edge => edge.TargetNodeNumber)
+                        .Select(edge => new
+                        {
+                            edge.SourceNodeNumber,
+                            edge.TargetNodeNumber,
+                            edge.Kind,
+                            edge.Label
+                        })
+                        .ToList(),
+                    executionPaths = item.ExecutionPaths
+                        .OrderBy(path => path.PathNumber)
+                        .Select(path => new
+                        {
+                            path.PathNumber,
+                            path.NodeSequenceJson
+                        })
+                        .ToList(),
+                    testCases = item.TestCases
+                        .Select(testCase => new
+                        {
+                            testCase.Name,
+                            testCase.InputsJson,
+                            testCase.ExpectedResult,
+                            testCase.Technique,
+                            testCase.LinkedPathNumber
+                        })
+                        .ToList()
+                })
+                .SingleOrDefaultAsync(ct);
 
             return analysis is null ? Results.NotFound() : Results.Ok(analysis);
         });
@@ -189,4 +278,10 @@ public static class ProjectEndpoints
 }
 
 public sealed record CreateProjectRequest(string Name, string? Description);
-public sealed record SaveAnalysisRequest(string SourceCode);
+public sealed record SaveAnalysisRequest(string SourceCode, IReadOnlyList<SavedTestCaseRequest>? TestCases = null);
+public sealed record SavedTestCaseRequest(
+    string Name,
+    IReadOnlyDictionary<string, string>? Inputs,
+    string ExpectedResult,
+    string Technique,
+    int? LinkedPathNumber);

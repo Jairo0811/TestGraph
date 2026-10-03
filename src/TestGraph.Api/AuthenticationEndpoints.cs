@@ -1,4 +1,5 @@
 using System.IdentityModel.Tokens.Jwt;
+using System.Net.Mail;
 using System.Security.Claims;
 using System.Text;
 using Microsoft.AspNetCore.Identity;
@@ -25,6 +26,11 @@ public static class AuthenticationEndpoints
             if (string.IsNullOrWhiteSpace(email) || string.IsNullOrWhiteSpace(request.Password))
             {
                 return Results.BadRequest(new { error = "Email and password are required." });
+            }
+
+            if (!IsValidEmail(email))
+            {
+                return Results.BadRequest(new { error = "Email format is invalid." });
             }
 
             if (request.Password.Length < 8)
@@ -55,6 +61,11 @@ public static class AuthenticationEndpoints
         {
             var email = request.Email?.Trim().ToLowerInvariant();
 
+            if (string.IsNullOrWhiteSpace(email) || string.IsNullOrWhiteSpace(request.Password))
+            {
+                return Results.BadRequest(new { error = "Email and password are required." });
+            }
+
             var user = await db.Users.SingleOrDefaultAsync(item => item.Email == email, ct);
             if (user is null)
             {
@@ -65,6 +76,12 @@ public static class AuthenticationEndpoints
             if (verification == PasswordVerificationResult.Failed)
             {
                 return Results.Unauthorized();
+            }
+
+            if (verification == PasswordVerificationResult.SuccessRehashNeeded)
+            {
+                user.SetPasswordHash(passwordHasher.HashPassword(user, request.Password));
+                await db.SaveChangesAsync(ct);
             }
 
             return Results.Ok(CreateTokenResponse(user, configuration));
@@ -85,6 +102,19 @@ public static class AuthenticationEndpoints
         }).RequireAuthorization();
 
         return endpoints;
+    }
+
+    private static bool IsValidEmail(string value)
+    {
+        try
+        {
+            var address = new MailAddress(value);
+            return string.Equals(address.Address, value, StringComparison.OrdinalIgnoreCase);
+        }
+        catch (FormatException)
+        {
+            return false;
+        }
     }
 
     private static object CreateTokenResponse(UserAccount user, IConfiguration configuration)

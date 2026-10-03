@@ -1,16 +1,8 @@
 import AutoAwesomeOutlinedIcon from '@mui/icons-material/AutoAwesomeOutlined'
 import { Chip, Paper, Stack, Typography } from '@mui/material'
+import type { AssistedSuggestionsDto } from '../../api/types'
 
-const suggestions = [
-  { name: 'edad = 17', rationale: 'Valor inmediatamente inferior a edad > 18' },
-  { name: 'edad = 18', rationale: 'Valor exacto de frontera para edad > 18' },
-  { name: 'edad = 19', rationale: 'Valor inmediatamente superior a edad > 18' },
-  { name: 'promedio = 8.99', rationale: 'Valor inmediatamente inferior a promedio >= 9' },
-  { name: 'promedio = 9', rationale: 'Valor exacto de frontera para promedio >= 9' },
-  { name: 'promedio = 9.01', rationale: 'Valor inmediatamente superior a promedio >= 9' },
-]
-
-export default function AssistedTestSuggestionsPanel() {
+export default function AssistedTestSuggestionsPanel({ result }: { result: AssistedSuggestionsDto }) {
   return (
     <Stack spacing={2}>
       <div>
@@ -21,25 +13,38 @@ export default function AssistedTestSuggestionsPanel() {
           </Typography>
         </Stack>
         <Typography color="text.secondary">
-          Sugerencias determinísticas basadas en los límites detectados en las condiciones TGPL.
+          Sugerencias determinísticas generadas desde los límites detectados en el AST TGPL.
         </Typography>
       </div>
 
-      <Stack direction={{ xs: 'column', md: 'row' }} gap={1.5} flexWrap="wrap">
-        {suggestions.map((suggestion) => (
-          <Paper key={suggestion.name} variant="outlined" sx={{ p: 2, flex: '1 1 300px' }}>
-            <Stack spacing={1}>
-              <Stack direction="row" justifyContent="space-between" gap={1}>
-                <Typography fontWeight={800}>{suggestion.name}</Typography>
-                <Chip size="small" label="Boundary Value" color="primary" variant="outlined" />
+      {result.testCases.length === 0 ? (
+        <Paper variant="outlined" sx={{ p: 2 }}>
+          <Typography color="text.secondary">
+            No se detectaron comparaciones numéricas con valores de frontera sugeribles.
+          </Typography>
+        </Paper>
+      ) : (
+        <Stack direction={{ xs: 'column', md: 'row' }} gap={1.5} flexWrap="wrap">
+          {result.testCases.map((suggestion) => (
+            <Paper key={`${suggestion.number}-${suggestion.name}`} variant="outlined" sx={{ p: 2, flex: '1 1 300px' }}>
+              <Stack spacing={1}>
+                <Stack direction="row" justifyContent="space-between" gap={1}>
+                  <Typography fontWeight={800}>{suggestion.name}</Typography>
+                  <Chip size="small" label={suggestion.technique} color="primary" variant="outlined" />
+                </Stack>
+                <Typography variant="body2" color="text.secondary">
+                  {suggestion.rationale}
+                </Typography>
+                {suggestion.sourceLine ? (
+                  <Typography variant="caption" color="text.secondary">
+                    Línea {suggestion.sourceLine}
+                  </Typography>
+                ) : null}
               </Stack>
-              <Typography variant="body2" color="text.secondary">
-                {suggestion.rationale}
-              </Typography>
-            </Stack>
-          </Paper>
-        ))}
-      </Stack>
+            </Paper>
+          ))}
+        </Stack>
+      )}
     </Stack>
   )
 }

@@ -3,10 +3,13 @@ using System.Threading.RateLimiting;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.RateLimiting;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using TestGraph.Api;
 using TestGraph.Domain.Identity;
 using TestGraph.Infrastructure.Persistence;
+
+const string developmentJwtKey = "dev-only-change-me-testgraph-signing-key-2026";
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -29,6 +32,12 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
         if (Encoding.UTF8.GetByteCount(key) < 32)
         {
             throw new InvalidOperationException("Jwt:Key must contain at least 32 bytes.");
+        }
+
+        if (!builder.Environment.IsDevelopment() && key == developmentJwtKey)
+        {
+            throw new InvalidOperationException(
+                "The development JWT signing key cannot be used outside the Development environment.");
         }
 
         options.TokenValidationParameters = new TokenValidationParameters
@@ -77,6 +86,13 @@ builder.Services.AddRateLimiter(options =>
 
 var app = builder.Build();
 
+if (app.Environment.IsDevelopment())
+{
+    await using var scope = app.Services.CreateAsyncScope();
+    var db = scope.ServiceProvider.GetRequiredService<TestGraphDbContext>();
+    await db.Database.EnsureCreatedAsync();
+}
+
 app.UseExceptionHandler();
 
 app.Use(async (context, next) =>
@@ -105,7 +121,7 @@ app.MapGet("/api/health", () => Results.Ok(new
 {
     service = "TestGraph.Api",
     status = "ok",
-    version = "1.0.0"
+    version = "1.0.1"
 }));
 
 app.Run();

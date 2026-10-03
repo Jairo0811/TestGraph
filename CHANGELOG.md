@@ -2,6 +2,24 @@
 
 All notable changes to TestGraph are documented here.
 
+## [1.0.1] - 2026-10-02
+
+### Fixed
+
+- replaces the Phase 5 static frontend demo with a live TGPL analysis workspace backed by `POST /api/analysis`;
+- renders the real CFG, cyclomatic complexity, basis paths, adjacency matrix and assisted test suggestions returned by the backend;
+- replaces the Scholarship hardcoded 13-node/3-decision graph with the deterministic CFG generated from the complete TGPL sample;
+- adds a generic deterministic graph layout for arbitrary supported TGPL control flow;
+- connects the Test Case Designer to basis paths and backend structural validation;
+- exposes Guest Mode plus account registration/login, project creation and analysis persistence in the frontend;
+- initializes the LocalDB schema automatically in Development so authentication and projects work on a fresh local clone;
+- standardizes the local API URL at `http://localhost:5152` and adds the Vite `/api` proxy;
+- makes JSON, CSV and Markdown exports use the canonical backend analysis pipeline;
+- avoids persistence JSON reference cycles by returning explicit DTO projections;
+- allows persisted analyses to include structural test cases;
+- validates authentication inputs and rejects the development JWT signing key outside Development;
+- updates the UI and API version to `1.0.1`.
+
 ## [1.0.0] - 2026-10-02
 
 ### Stable release
