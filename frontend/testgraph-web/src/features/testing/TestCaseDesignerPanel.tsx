@@ -45,9 +45,10 @@ function parseInputs(raw: string) {
 export interface TestCaseDesignerPanelProps {
   sourceCode: string
   paths: BasisPathDto[]
+  onDraftsChange?: (drafts: TestCaseDraftDto[]) => void
 }
 
-export default function TestCaseDesignerPanel({ sourceCode, paths }: TestCaseDesignerPanelProps) {
+export default function TestCaseDesignerPanel({ sourceCode, paths, onDraftsChange }: TestCaseDesignerPanelProps) {
   const [draft, setDraft] = useState<DraftForm>({
     name: '',
     inputs: '',
@@ -61,11 +62,17 @@ export default function TestCaseDesignerPanel({ sourceCode, paths }: TestCaseDes
     mutationFn: () => designTestCases(sourceCode, drafts),
   })
 
+  const updateDrafts = (next: TestCaseDraftDto[]) => {
+    setDrafts(next)
+    onDraftsChange?.(next)
+    designMutation.reset()
+  }
+
   const addCase = () => {
     if (!draft.name.trim() || !draft.expectedResult.trim()) return
 
-    setDrafts((current) => [
-      ...current,
+    const next = [
+      ...drafts,
       {
         name: draft.name.trim(),
         inputs: parseInputs(draft.inputs),
@@ -73,8 +80,9 @@ export default function TestCaseDesignerPanel({ sourceCode, paths }: TestCaseDes
         technique: draft.technique,
         linkedPathNumber: draft.linkedPathNumber ? Number(draft.linkedPathNumber) : undefined,
       },
-    ])
+    ]
 
+    updateDrafts(next)
     setDraft({
       name: '',
       inputs: '',
@@ -82,7 +90,6 @@ export default function TestCaseDesignerPanel({ sourceCode, paths }: TestCaseDes
       technique: 'Manual',
       linkedPathNumber: '',
     })
-    designMutation.reset()
   }
 
   return (
@@ -176,9 +183,14 @@ export default function TestCaseDesignerPanel({ sourceCode, paths }: TestCaseDes
       </Stack>
 
       {drafts.length > 0 ? (
-        <Button variant="outlined" disabled={designMutation.isPending} onClick={() => designMutation.mutate()}>
-          {designMutation.isPending ? 'Validando…' : 'Validar casos contra el CFG'}
-        </Button>
+        <Stack direction={{ xs: 'column', sm: 'row' }} gap={1}>
+          <Button variant="outlined" disabled={designMutation.isPending} onClick={() => designMutation.mutate()}>
+            {designMutation.isPending ? 'Validando…' : 'Validar casos contra el CFG'}
+          </Button>
+          <Button color="inherit" onClick={() => updateDrafts([])}>
+            Limpiar casos
+          </Button>
+        </Stack>
       ) : null}
 
       {designMutation.error ? <Alert severity="error">{designMutation.error.message}</Alert> : null}
