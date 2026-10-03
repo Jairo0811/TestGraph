@@ -2,7 +2,7 @@
 
 All notable changes to TestGraph are documented here.
 
-## [1.0.1] - 2026-10-02
+## [1.0.1] - 2026-10-03
 
 ### Fixed
 
@@ -18,7 +18,15 @@ All notable changes to TestGraph are documented here.
 - avoids persistence JSON reference cycles by returning explicit DTO projections;
 - allows persisted analyses to include structural test cases;
 - validates authentication inputs and rejects the development JWT signing key outside Development;
-- updates the UI and API version to `1.0.1`.
+- updates the UI and API version to `1.0.1`;
+- restores the transparent TestGraph logo after the final browser smoke test;
+- adds the responsive branded application shell and mobile-friendly analysis panels;
+- adds the TestGraph isotipo as `favicon.ico` and finalizes browser metadata.
+
+### Status
+
+- TestGraph V1 is frozen at `v1.0.1` after the final integration, responsive UI, asset and CI review;
+- future changes to the frozen V1 line are limited to critical defects, security fixes or compatibility maintenance.
 
 ## [1.0.0] - 2026-10-02
 
