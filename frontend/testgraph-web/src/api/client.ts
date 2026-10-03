@@ -5,6 +5,8 @@ import type {
   AuthResponseDto,
   ProjectSummaryDto,
   SavedAnalysisDto,
+  TestCaseDesignResultDto,
+  TestCaseDraftDto,
 } from './types'
 
 const tokenKey = 'testgraph.accessToken'
@@ -55,6 +57,13 @@ export function analyzeSource(sourceCode: string) {
   return api<AnalysisResultDto>('/api/analysis', {
     method: 'POST',
     body: JSON.stringify({ sourceCode }),
+  })
+}
+
+export function designTestCases(sourceCode: string, testCases: TestCaseDraftDto[]) {
+  return api<TestCaseDesignResultDto>('/api/analysis/test-cases/design', {
+    method: 'POST',
+    body: JSON.stringify({ sourceCode, testCases }),
   })
 }
 
