@@ -68,6 +68,37 @@ export interface AnalysisResultDto {
   suggestions: AssistedSuggestionsDto
 }
 
+export interface TestCaseDraftDto {
+  name: string
+  inputs: Record<string, string>
+  expectedResult: string
+  technique: string
+  linkedPathNumber?: number
+}
+
+export interface StructuralTestCaseDto {
+  number: number
+  name: string
+  inputs: Record<string, string>
+  expectedResult: string
+  technique: string | number
+  linkedPathNumber?: number
+  coveredNodeIds: number[]
+  coveredEdgeIndexes: number[]
+}
+
+export interface TestCaseDiagnosticDto {
+  draftIndex: number
+  code: string
+  message: string
+}
+
+export interface TestCaseDesignResultDto {
+  testCases: StructuralTestCaseDto[]
+  diagnostics: TestCaseDiagnosticDto[]
+  isValid: boolean
+}
+
 export interface AcademicSampleSummaryDto {
   id: string
   name: string
