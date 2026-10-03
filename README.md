@@ -261,7 +261,14 @@ Complejidad ciclomática: `3`.
 
 ## 🧱 Stack tecnológico
 
-### Frontend
+### 🎨 Frontend
+
+<p>
+  <img src="https://skillicons.dev/icons?i=react,ts,vite" alt="React, TypeScript y Vite" />
+  <img src="https://img.shields.io/badge/TanStack%20Query-5-FF4154?style=flat-square&logo=reactquery&logoColor=white" alt="TanStack Query" />
+  <img src="https://img.shields.io/badge/React%20Flow-xyflow-FF0072?style=flat-square" alt="React Flow / xyflow" />
+  <img src="https://img.shields.io/badge/Material%20UI-MUI-007FFF?style=flat-square&logo=mui&logoColor=white" alt="Material UI" />
+</p>
 
 - React 19;
 - TypeScript;
@@ -271,7 +278,14 @@ Complejidad ciclomática: `3`.
 - Material UI;
 - `html-to-image` para exportar el CFG.
 
-### Backend
+### ⚙️ Backend
+
+<p>
+  <img src="https://skillicons.dev/icons?i=dotnet,cs" alt=".NET y C#" />
+  <img src="https://img.shields.io/badge/ASP.NET%20Core-Web%20API-512BD4?style=flat-square&logo=dotnet&logoColor=white" alt="ASP.NET Core Web API" />
+  <img src="https://img.shields.io/badge/EF%20Core-ORM-512BD4?style=flat-square&logo=dotnet&logoColor=white" alt="Entity Framework Core" />
+  <img src="https://img.shields.io/badge/JWT-Authentication-000000?style=flat-square&logo=jsonwebtokens&logoColor=white" alt="JWT" />
+</p>
 
 - .NET 10;
 - ASP.NET Core Web API;
@@ -279,11 +293,24 @@ Complejidad ciclomática: `3`.
 - Entity Framework Core;
 - JWT Bearer Authentication.
 
-### Datos y herramientas
+### 🗄️ Datos
 
-- Microsoft SQL Server / LocalDB para desarrollo;
+<p>
+  <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/microsoftsqlserver/microsoftsqlserver-plain.svg" width="52" height="52" alt="Microsoft SQL Server" />
+</p>
+
+- Microsoft SQL Server / LocalDB para desarrollo.
+
+### 🧪 Calidad y DevOps
+
+<p>
+  <img src="https://skillicons.dev/icons?i=git,github,githubactions" alt="Git, GitHub y GitHub Actions" />
+  <img src="https://img.shields.io/badge/xUnit-Testing-512BD4?style=flat-square&logo=dotnet&logoColor=white" alt="xUnit" />
+</p>
+
 - Git / GitHub;
-- GitHub Actions.
+- GitHub Actions;
+- xUnit para pruebas automatizadas del backend y motor de análisis.
 
 ---
 
