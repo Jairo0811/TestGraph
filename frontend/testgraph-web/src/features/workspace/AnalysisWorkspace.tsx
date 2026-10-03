@@ -4,7 +4,7 @@ import RestartAltOutlinedIcon from '@mui/icons-material/RestartAltOutlined'
 import { Alert, Button, Chip, Paper, Stack, TextField, Typography } from '@mui/material'
 import { useMutation, useQuery } from '@tanstack/react-query'
 import { analyzeSource, getSample, getSamples } from '../../api/client'
-import type { AnalysisResultDto } from '../../api/types'
+import type { AnalysisResultDto, TestCaseDraftDto } from '../../api/types'
 import ControlFlowGraphViewer from '../control-flow/ControlFlowGraphViewer'
 import ComplexityPanel from '../complexity/ComplexityPanel'
 import BasisPathsPanel from '../paths/BasisPathsPanel'
@@ -50,6 +50,8 @@ export default function AnalysisWorkspace() {
   const [source, setSource] = useState(defaultSource)
   const [analysis, setAnalysis] = useState<AnalysisResultDto | null>(null)
   const [loadingSampleId, setLoadingSampleId] = useState<string>()
+  const [selectedPathNumber, setSelectedPathNumber] = useState<number>()
+  const [designedCases, setDesignedCases] = useState<TestCaseDraftDto[]>([])
 
   const samplesQuery = useQuery({
     queryKey: ['academic-samples'],
@@ -59,8 +61,24 @@ export default function AnalysisWorkspace() {
 
   const analysisMutation = useMutation({
     mutationFn: analyzeSource,
-    onSuccess: setAnalysis,
+    onSuccess: (result) => {
+      setAnalysis(result)
+      setSelectedPathNumber(undefined)
+      setDesignedCases([])
+    },
   })
+
+  const clearDerivedState = () => {
+    setAnalysis(null)
+    setSelectedPathNumber(undefined)
+    setDesignedCases([])
+    analysisMutation.reset()
+  }
+
+  const updateSource = (next: string) => {
+    setSource(next)
+    clearDerivedState()
+  }
 
   const runAnalysis = () => {
     analysisMutation.mutate(source)
@@ -71,11 +89,13 @@ export default function AnalysisWorkspace() {
     try {
       const sample = await getSample(id)
       setSource(sample.sourceCode)
-      setAnalysis(null)
+      clearDerivedState()
     } finally {
       setLoadingSampleId(undefined)
     }
   }
+
+  const selectedPath = analysis?.paths.items.find((path) => path.number === selectedPathNumber)
 
   return (
     <Stack spacing={4}>
@@ -100,7 +120,7 @@ export default function AnalysisWorkspace() {
           <TextField
             label="TGPL source"
             value={source}
-            onChange={(event) => setSource(event.target.value)}
+            onChange={(event) => updateSource(event.target.value)}
             multiline
             minRows={18}
             maxRows={30}
@@ -130,7 +150,7 @@ export default function AnalysisWorkspace() {
               startIcon={<RestartAltOutlinedIcon />}
               onClick={() => {
                 setSource(defaultSource)
-                setAnalysis(null)
+                clearDerivedState()
               }}
             >
               Restaurar Becas
@@ -152,16 +172,24 @@ export default function AnalysisWorkspace() {
       {analysis ? (
         <>
           <ComplexityPanel result={analysis.complexity} />
-          <ControlFlowGraphViewer graph={analysis.graph} />
-          <BasisPathsPanel result={analysis.paths} />
+          <ControlFlowGraphViewer graph={analysis.graph} highlightedPathNodeIds={selectedPath?.nodeIds} />
+          <BasisPathsPanel
+            result={analysis.paths}
+            selectedPathNumber={selectedPathNumber}
+            onSelectPath={setSelectedPathNumber}
+          />
           <AdjacencyMatrixPanel matrix={analysis.matrix} />
-          <TestCaseDesignerPanel sourceCode={source} paths={analysis.paths.items} />
+          <TestCaseDesignerPanel
+            sourceCode={source}
+            paths={analysis.paths.items}
+            onDraftsChange={setDesignedCases}
+          />
           <AssistedTestSuggestionsPanel result={analysis.suggestions} />
           <ExportPanel sourceCode={source} />
         </>
       ) : null}
 
-      <AccountProjectsPanel sourceCode={source} />
+      <AccountProjectsPanel sourceCode={source} testCases={designedCases} />
 
       {samplesQuery.error ? (
         <Alert severity="warning">
