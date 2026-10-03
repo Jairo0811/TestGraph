@@ -157,7 +157,7 @@ export default function AnalysisWorkspace() {
           <AdjacencyMatrixPanel matrix={analysis.matrix} />
           <TestCaseDesignerPanel sourceCode={source} paths={analysis.paths.items} />
           <AssistedTestSuggestionsPanel result={analysis.suggestions} />
-          <ExportPanel graph={analysis.graph} />
+          <ExportPanel sourceCode={source} />
         </>
       ) : null}
 
