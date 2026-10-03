@@ -1,15 +1,28 @@
-import { Button, Paper, Stack, Typography } from '@mui/material'
+import { useState } from 'react'
+import { Alert, Button, Paper, Stack, Typography } from '@mui/material'
 import DownloadOutlinedIcon from '@mui/icons-material/DownloadOutlined'
 import ImageOutlinedIcon from '@mui/icons-material/ImageOutlined'
 import { toPng } from 'html-to-image'
-import type { ControlFlowGraphDto } from '../control-flow/types'
 
-export interface ExportPanelProps {
-  graph: ControlFlowGraphDto
-}
+async function downloadFromApi(path: string, filename: string, sourceCode: string) {
+  const response = await fetch(path, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ sourceCode }),
+  })
 
-function downloadText(filename: string, mime: string, content: string) {
-  const blob = new Blob([content], { type: mime })
+  if (!response.ok) {
+    let message = `${response.status} ${response.statusText}`
+    try {
+      const payload = (await response.json()) as { error?: string }
+      if (payload.error) message = payload.error
+    } catch {
+      // Keep HTTP status.
+    }
+    throw new Error(message)
+  }
+
+  const blob = await response.blob()
   const url = URL.createObjectURL(blob)
   const anchor = document.createElement('a')
   anchor.href = url
@@ -18,45 +31,36 @@ function downloadText(filename: string, mime: string, content: string) {
   URL.revokeObjectURL(url)
 }
 
-export default function ExportPanel({ graph }: ExportPanelProps) {
-  const exportJson = () => {
-    downloadText('testgraph-analysis.json', 'application/json', JSON.stringify(graph, null, 2))
-  }
+export default function ExportPanel({ sourceCode }: { sourceCode: string }) {
+  const [error, setError] = useState<string>()
 
-  const exportCsv = () => {
-    const ids = [...graph.nodes].map((node) => node.id).sort((a, b) => a - b)
-    const index = new Map(ids.map((id, position) => [id, position]))
-    const matrix = ids.map(() => ids.map(() => 0))
-
-    graph.edges.forEach((edge) => {
-      const row = index.get(edge.sourceId)
-      const column = index.get(edge.targetId)
-      if (row !== undefined && column !== undefined) {
-        matrix[row][column] += 1
-      }
-    })
-
-    const csvRows = [',' + ids.join(',')]
-    matrix.forEach((row, rowIndex) => {
-      csvRows.push(String(ids[rowIndex]) + ',' + row.join(','))
-    })
-
-    downloadText('testgraph-matrix.csv', 'text/csv', csvRows.join('\n'))
+  const runDownload = async (path: string, filename: string) => {
+    setError(undefined)
+    try {
+      await downloadFromApi(path, filename, sourceCode)
+    } catch (exception) {
+      setError(exception instanceof Error ? exception.message : 'No se pudo completar la exportación.')
+    }
   }
 
   const exportPng = async () => {
-    const element = document.querySelector<HTMLElement>('[data-testid="cfg-canvas"]')
-    if (!element) return
+    setError(undefined)
+    try {
+      const element = document.querySelector<HTMLElement>('[data-testid="cfg-canvas"]')
+      if (!element) throw new Error('El CFG todavía no está visible.')
 
-    const dataUrl = await toPng(element, {
-      backgroundColor: '#07111f',
-      pixelRatio: 2,
-    })
+      const dataUrl = await toPng(element, {
+        backgroundColor: '#07111f',
+        pixelRatio: 2,
+      })
 
-    const anchor = document.createElement('a')
-    anchor.href = dataUrl
-    anchor.download = 'testgraph-cfg.png'
-    anchor.click()
+      const anchor = document.createElement('a')
+      anchor.href = dataUrl
+      anchor.download = 'testgraph-cfg.png'
+      anchor.click()
+    } catch (exception) {
+      setError(exception instanceof Error ? exception.message : 'No se pudo exportar el CFG.')
+    }
   }
 
   return (
@@ -67,21 +71,26 @@ export default function ExportPanel({ graph }: ExportPanelProps) {
             Exports & Reports
           </Typography>
           <Typography color="text.secondary">
-            Exporta el análisis estructural en formatos portables.
+            Los formatos de datos se generan desde el mismo pipeline determinístico del backend.
           </Typography>
         </div>
 
-        <Stack direction={{ xs: 'column', sm: 'row' }} gap={1}>
-          <Button startIcon={<DownloadOutlinedIcon />} variant="outlined" onClick={exportJson}>
+        <Stack direction={{ xs: 'column', sm: 'row' }} gap={1} flexWrap="wrap">
+          <Button startIcon={<DownloadOutlinedIcon />} variant="outlined" onClick={() => runDownload('/api/analysis/export/json', 'testgraph-analysis.json')}>
             JSON
           </Button>
-          <Button startIcon={<DownloadOutlinedIcon />} variant="outlined" onClick={exportCsv}>
+          <Button startIcon={<DownloadOutlinedIcon />} variant="outlined" onClick={() => runDownload('/api/analysis/export/matrix.csv', 'testgraph-matrix.csv')}>
             CSV Matrix
+          </Button>
+          <Button startIcon={<DownloadOutlinedIcon />} variant="outlined" onClick={() => runDownload('/api/analysis/report/markdown', 'testgraph-report.md')}>
+            Markdown Report
           </Button>
           <Button startIcon={<ImageOutlinedIcon />} variant="contained" onClick={exportPng}>
             CFG PNG
           </Button>
         </Stack>
+
+        {error ? <Alert severity="error">{error}</Alert> : null}
       </Stack>
     </Paper>
   )
