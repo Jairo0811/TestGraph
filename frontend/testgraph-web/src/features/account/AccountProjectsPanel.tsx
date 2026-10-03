@@ -2,6 +2,7 @@ import { useState } from 'react'
 import {
   Alert,
   Button,
+  Chip,
   MenuItem,
   Paper,
   Stack,
@@ -19,8 +20,14 @@ import {
   register,
   saveAnalysis,
 } from '../../api/client'
+import type { TestCaseDraftDto } from '../../api/types'
 
-export default function AccountProjectsPanel({ sourceCode }: { sourceCode: string }) {
+export interface AccountProjectsPanelProps {
+  sourceCode: string
+  testCases: TestCaseDraftDto[]
+}
+
+export default function AccountProjectsPanel({ sourceCode, testCases }: AccountProjectsPanelProps) {
   const queryClient = useQueryClient()
   const [authenticated, setAuthenticated] = useState(Boolean(getStoredToken()))
   const [email, setEmail] = useState('')
@@ -65,7 +72,7 @@ export default function AccountProjectsPanel({ sourceCode }: { sourceCode: strin
   })
 
   const saveMutation = useMutation({
-    mutationFn: () => saveAnalysis(projectId, sourceCode),
+    mutationFn: () => saveAnalysis(projectId, sourceCode, testCases),
     onSuccess: () => queryClient.invalidateQueries({ queryKey: ['projects'] }),
   })
 
@@ -99,6 +106,9 @@ export default function AccountProjectsPanel({ sourceCode }: { sourceCode: strin
                 Crear cuenta
               </Button>
             </Stack>
+            <Typography variant="caption" color="text.secondary">
+              La contraseña debe tener al menos 8 caracteres.
+            </Typography>
             {authMutation.error ? <Alert severity="error">{authMutation.error.message}</Alert> : null}
           </Stack>
         ) : (
@@ -137,9 +147,13 @@ export default function AccountProjectsPanel({ sourceCode }: { sourceCode: strin
               </Button>
             </Stack>
 
+            <Stack direction="row" gap={1} flexWrap="wrap">
+              <Chip size="small" variant="outlined" label={`${testCases.length} caso(s) de prueba incluidos`} />
+            </Stack>
+
             {createMutation.error ? <Alert severity="error">{createMutation.error.message}</Alert> : null}
             {saveMutation.error ? <Alert severity="error">{saveMutation.error.message}</Alert> : null}
-            {saveMutation.isSuccess ? <Alert severity="success">Análisis guardado correctamente.</Alert> : null}
+            {saveMutation.isSuccess ? <Alert severity="success">Análisis y casos de prueba guardados correctamente.</Alert> : null}
             {meQuery.error || projectsQuery.error ? (
               <Alert severity="warning">La sesión ya no es válida o la base de datos no está disponible. Cierra sesión e inténtalo de nuevo.</Alert>
             ) : null}
