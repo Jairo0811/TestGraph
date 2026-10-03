@@ -35,12 +35,24 @@ const minimapColor: Record<FlowNodeKind, string> = {
 
 export interface ControlFlowGraphViewerProps {
   graph: ControlFlowGraphDto
+  highlightedPathNodeIds?: number[]
 }
 
-export default function ControlFlowGraphViewer({ graph }: ControlFlowGraphViewerProps) {
+export default function ControlFlowGraphViewer({ graph, highlightedPathNodeIds = [] }: ControlFlowGraphViewerProps) {
   const [selectedNodeId, setSelectedNodeId] = useState<string | null>(null)
 
   const elements = useMemo(() => toReactFlowElements(graph), [graph])
+  const highlightedNodes = useMemo(
+    () => new Set(highlightedPathNodeIds.map(String)),
+    [highlightedPathNodeIds],
+  )
+  const highlightedPairs = useMemo(() => {
+    const pairs = new Set<string>()
+    for (let index = 0; index < highlightedPathNodeIds.length - 1; index++) {
+      pairs.add(`${highlightedPathNodeIds[index]}:${highlightedPathNodeIds[index + 1]}`)
+    }
+    return pairs
+  }, [highlightedPathNodeIds])
 
   const connectedEdgeIds = useMemo(() => {
     if (!selectedNodeId) return new Set<string>()
@@ -54,12 +66,15 @@ export default function ControlFlowGraphViewer({ graph }: ControlFlowGraphViewer
 
   const nodes: Node<CfgNodeData>[] = elements.nodes.map((node) => ({
     ...node,
-    selected: node.id === selectedNodeId,
+    selected: node.id === selectedNodeId || (!selectedNodeId && highlightedNodes.has(node.id)),
   }))
 
   const edges: Edge[] = elements.edges.map((edge) => {
     const kind = (edge.data?.kind ?? 'Normal') as FlowEdgeKind
-    const highlighted = selectedNodeId !== null && connectedEdgeIds.has(edge.id)
+    const directHighlight = selectedNodeId !== null && connectedEdgeIds.has(edge.id)
+    const pathHighlight = !selectedNodeId && highlightedPairs.has(`${edge.source}:${edge.target}`)
+    const highlighted = directHighlight || pathHighlight
+    const hasFocus = selectedNodeId !== null || highlightedPathNodeIds.length > 0
 
     return {
       ...edge,
@@ -70,10 +85,10 @@ export default function ControlFlowGraphViewer({ graph }: ControlFlowGraphViewer
       style: {
         stroke: highlighted ? '#22d3ee' : edgeColor[kind],
         strokeWidth: highlighted ? 3 : 1.8,
-        opacity: selectedNodeId && !highlighted ? 0.28 : 1,
+        opacity: hasFocus && !highlighted ? 0.25 : 1,
       },
       labelStyle: {
-        fill: edgeColor[kind],
+        fill: highlighted ? '#22d3ee' : edgeColor[kind],
         fontWeight: 700,
         fontSize: 12,
       },
@@ -92,7 +107,7 @@ export default function ControlFlowGraphViewer({ graph }: ControlFlowGraphViewer
             Control Flow Graph
           </Typography>
           <Typography color="text.secondary">
-            Selecciona un nodo para resaltar sus conexiones directas.
+            Selecciona un nodo o un basis path para resaltar el flujo correspondiente.
           </Typography>
         </Box>
         <Stack direction="row" gap={1} flexWrap="wrap">
@@ -165,9 +180,13 @@ export default function ControlFlowGraphViewer({ graph }: ControlFlowGraphViewer
                 {selectedNode.sourceLine ? ` · línea ${selectedNode.sourceLine}` : ''}
               </Typography>
             </Stack>
+          ) : highlightedPathNodeIds.length > 0 ? (
+            <Typography variant="body2" color="text.secondary" mt={1}>
+              Basis path resaltado: {highlightedPathNodeIds.join(' → ')}
+            </Typography>
           ) : (
             <Typography variant="body2" color="text.secondary" mt={1}>
-              Ninguno. Haz clic sobre un nodo del grafo.
+              Ninguno. Haz clic sobre un nodo o selecciona un basis path.
             </Typography>
           )}
         </Paper>
