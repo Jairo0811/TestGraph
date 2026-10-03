@@ -3,6 +3,7 @@ using System.Threading.RateLimiting;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.RateLimiting;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using TestGraph.Api;
 using TestGraph.Domain.Identity;
@@ -77,6 +78,13 @@ builder.Services.AddRateLimiter(options =>
 
 var app = builder.Build();
 
+if (app.Environment.IsDevelopment())
+{
+    await using var scope = app.Services.CreateAsyncScope();
+    var db = scope.ServiceProvider.GetRequiredService<TestGraphDbContext>();
+    await db.Database.EnsureCreatedAsync();
+}
+
 app.UseExceptionHandler();
 
 app.Use(async (context, next) =>
@@ -105,7 +113,7 @@ app.MapGet("/api/health", () => Results.Ok(new
 {
     service = "TestGraph.Api",
     status = "ok",
-    version = "1.0.0"
+    version = "1.0.1"
 }));
 
 app.Run();
