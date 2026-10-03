@@ -1,14 +1,13 @@
-import { Chip, Paper, Stack, Typography } from '@mui/material'
+import { Button, Chip, Paper, Stack, Typography } from '@mui/material'
+import type { AcademicSampleSummaryDto } from '../../api/types'
 
-const samples = [
-  ['Matrix Minimum Even', 'Angel Emmanuel Gonzalez Acosta', false],
-  ['Scholarship Calculator', 'Francis Jairo Matias Rosario', true],
-  ['Numbers Ending in Four', 'Robinson Junior Novo Lopez', true],
-  ['Find Number 24', 'Christian Rainel Menendez Hiciano', false],
-  ['Discount Calculator', 'Diego Jose Montero Almonte', true],
-] as const
+export interface AcademicSamplesPanelProps {
+  samples: AcademicSampleSummaryDto[]
+  loadingId?: string
+  onLoad: (id: string) => void
+}
 
-export default function AcademicSamplesPanel() {
+export default function AcademicSamplesPanel({ samples, loadingId, onLoad }: AcademicSamplesPanelProps) {
   return (
     <Stack spacing={2}>
       <div>
@@ -21,20 +20,40 @@ export default function AcademicSamplesPanel() {
       </div>
 
       <Stack direction={{ xs: 'column', md: 'row' }} gap={1.5} flexWrap="wrap">
-        {samples.map(([name, author, ready]) => (
-          <Paper key={name} variant="outlined" sx={{ p: 2, flex: '1 1 300px' }}>
+        {samples.map((sample) => (
+          <Paper key={sample.id} variant="outlined" sx={{ p: 2, flex: '1 1 300px' }}>
             <Stack spacing={1}>
-              <Typography fontWeight={800}>{name}</Typography>
+              <Typography fontWeight={800}>{sample.name}</Typography>
               <Typography variant="body2" color="text.secondary">
-                {author}
+                {sample.originalAuthor}
               </Typography>
-              <Chip
+              <Typography variant="body2" color="text.secondary">
+                {sample.description}
+              </Typography>
+              <Stack direction="row" gap={1} flexWrap="wrap">
+                <Chip
+                  size="small"
+                  label={sample.analyzerReady ? 'TGPL V1 ready' : 'Preserved · syntax pending'}
+                  color={sample.analyzerReady ? 'success' : 'default'}
+                  variant="outlined"
+                />
+                {sample.expectedCyclomaticComplexity ? (
+                  <Chip size="small" label={`V(G) ${sample.expectedCyclomaticComplexity}`} variant="outlined" />
+                ) : null}
+              </Stack>
+              {sample.limitation ? (
+                <Typography variant="caption" color="text.secondary">
+                  {sample.limitation}
+                </Typography>
+              ) : null}
+              <Button
                 size="small"
-                label={ready ? 'TGPL V1 ready' : 'Preserved · matrix syntax pending'}
-                color={ready ? 'success' : 'default'}
                 variant="outlined"
-                sx={{ alignSelf: 'flex-start' }}
-              />
+                disabled={!sample.analyzerReady || loadingId === sample.id}
+                onClick={() => onLoad(sample.id)}
+              >
+                {loadingId === sample.id ? 'Cargando…' : 'Cargar en editor'}
+              </Button>
             </Stack>
           </Paper>
         ))}
