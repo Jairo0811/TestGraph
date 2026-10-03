@@ -1,6 +1,8 @@
 <div align="center">
 
-# TestGraph
+<p align="center">
+  <img src="docs/images/TestGraph-logo.png" alt="Logo de TestGraph" width="720" />
+</p>
 
 <img src="https://img.shields.io/badge/UNAPEC-ISO--300-003B70?style=for-the-badge" alt="UNAPEC ISO-300" />
 <img src="https://img.shields.io/badge/Estado-v1.0.0%20estable-2563EB?style=for-the-badge" alt="Estado: v1.0.0 estable" />
