@@ -4,7 +4,11 @@
   <img src="docs/images/TestGraph-logo.png" alt="Logo de TestGraph" width="720" />
 </p>
 
+<p align="center">
 <img src="https://img.shields.io/badge/UNAPEC-ISO--300-003B70?style=for-the-badge" alt="UNAPEC ISO-300" />
+</p>
+
+
 <img src="https://img.shields.io/badge/Estado-v1.0.0%20estable-2563EB?style=for-the-badge" alt="Estado: v1.0.0 estable" />
 <img src="https://img.shields.io/badge/Tipo-Portafolio%20%7C%20Open%20Source-6F42C1?style=for-the-badge" alt="Proyecto de portafolio y open source" />
 
