@@ -101,16 +101,21 @@ export default function ControlFlowGraphViewer({ graph, highlightedPathNodeIds =
 
   return (
     <Stack spacing={2}>
-      <Stack direction={{ xs: 'column', md: 'row' }} justifyContent="space-between" gap={2}>
+      <Stack
+        direction={{ xs: 'column', md: 'row' }}
+        justifyContent="space-between"
+        alignItems={{ md: 'flex-end' }}
+        gap={2}
+      >
         <Box>
-          <Typography variant="h5" fontWeight={800}>
+          <Typography variant="h5" fontWeight={900}>
             Control Flow Graph
           </Typography>
           <Typography color="text.secondary">
             Selecciona un nodo o un basis path para resaltar el flujo correspondiente.
           </Typography>
         </Box>
-        <Stack direction="row" gap={1} flexWrap="wrap">
+        <Stack direction="row" gap={0.75} flexWrap="wrap" useFlexGap>
           <Chip size="small" label={`${graph.nodes.length} nodos`} />
           <Chip size="small" label={`${graph.edges.length} aristas`} />
           <Chip size="small" label={`${graph.nodes.filter((node) => node.kind === 'Decision').length} decisiones`} />
@@ -121,10 +126,20 @@ export default function ControlFlowGraphViewer({ graph, highlightedPathNodeIds =
         data-testid="cfg-canvas"
         variant="outlined"
         sx={{
-          height: { xs: 620, md: 760 },
+          height: { xs: 500, sm: 620, md: 760 },
+          minHeight: 420,
           overflow: 'hidden',
-          borderColor: 'rgba(148,163,184,.2)',
+          borderRadius: { xs: 2.5, md: 3 },
+          borderColor: 'rgba(34, 211, 238, .16)',
           bgcolor: '#07111f',
+          boxShadow: 'inset 0 0 60px rgba(0, 0, 0, .12)',
+          '& .react-flow__minimap': {
+            display: { xs: 'none', sm: 'block' },
+          },
+          '& .react-flow__controls': {
+            transform: { xs: 'scale(.9)', sm: 'none' },
+            transformOrigin: 'bottom left',
+          },
         }}
       >
         <ReactFlow
@@ -133,7 +148,7 @@ export default function ControlFlowGraphViewer({ graph, highlightedPathNodeIds =
           nodeTypes={nodeTypes}
           fitView
           fitViewOptions={{ padding: 0.18 }}
-          minZoom={0.25}
+          minZoom={0.2}
           maxZoom={1.8}
           onNodeClick={(_, node) => setSelectedNodeId(node.id)}
           onPaneClick={() => setSelectedNodeId(null)}
@@ -158,7 +173,7 @@ export default function ControlFlowGraphViewer({ graph, highlightedPathNodeIds =
           <Typography variant="subtitle2" fontWeight={800} gutterBottom>
             Leyenda
           </Typography>
-          <Stack direction="row" gap={1} flexWrap="wrap">
+          <Stack direction="row" gap={0.75} flexWrap="wrap" useFlexGap>
             <Chip size="small" label="Entrada / Salida" sx={{ borderColor: '#22d3ee' }} variant="outlined" />
             <Chip size="small" label="Sentencia" sx={{ borderColor: '#3b82f6' }} variant="outlined" />
             <Chip size="small" label="Decisión" sx={{ borderColor: '#f59e0b' }} variant="outlined" />
@@ -168,7 +183,7 @@ export default function ControlFlowGraphViewer({ graph, highlightedPathNodeIds =
           </Stack>
         </Paper>
 
-        <Paper variant="outlined" sx={{ p: 2, minWidth: { md: 300 } }}>
+        <Paper variant="outlined" sx={{ p: 2, minWidth: { md: 300 }, flex: { xs: 1, md: '0 1 360px' } }}>
           <Typography variant="subtitle2" fontWeight={800}>
             Nodo seleccionado
           </Typography>
@@ -181,7 +196,7 @@ export default function ControlFlowGraphViewer({ graph, highlightedPathNodeIds =
               </Typography>
             </Stack>
           ) : highlightedPathNodeIds.length > 0 ? (
-            <Typography variant="body2" color="text.secondary" mt={1}>
+            <Typography variant="body2" color="text.secondary" mt={1} sx={{ overflowWrap: 'anywhere' }}>
               Basis path resaltado: {highlightedPathNodeIds.join(' → ')}
             </Typography>
           ) : (
