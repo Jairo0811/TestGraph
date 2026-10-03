@@ -155,7 +155,7 @@ export default function AnalysisWorkspace() {
           <ControlFlowGraphViewer graph={analysis.graph} />
           <BasisPathsPanel result={analysis.paths} />
           <AdjacencyMatrixPanel matrix={analysis.matrix} />
-          <TestCaseDesignerPanel />
+          <TestCaseDesignerPanel sourceCode={source} paths={analysis.paths.items} />
           <AssistedTestSuggestionsPanel result={analysis.suggestions} />
           <ExportPanel graph={analysis.graph} />
         </>
