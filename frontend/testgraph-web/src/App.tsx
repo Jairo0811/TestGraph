@@ -1,19 +1,6 @@
-import { Box, Chip, Container, Paper, Stack, Typography } from '@mui/material'
+import { Box, Chip, Container, Stack, Typography } from '@mui/material'
 import AccountTreeOutlinedIcon from '@mui/icons-material/AccountTreeOutlined'
-import ControlFlowGraphViewer from './features/control-flow/ControlFlowGraphViewer'
-import { scholarshipGraph } from './features/control-flow/sampleGraph'
-import AdjacencyMatrixPanel from './features/matrix/AdjacencyMatrixPanel'
-import TestCaseDesignerPanel from './features/testing/TestCaseDesignerPanel'
-import AssistedTestSuggestionsPanel from './features/testing/AssistedTestSuggestionsPanel'
-import AcademicSamplesPanel from './features/samples/AcademicSamplesPanel'
-import ExportPanel from './features/export/ExportPanel'
-
-const modules = [
-  'TGPL Lexer',
-  'TGPL Parser + AST',
-  'Control Flow Graph Engine',
-  'CFG Visualization',
-]
+import AnalysisWorkspace from './features/workspace/AnalysisWorkspace'
 
 export default function App() {
   return (
@@ -39,44 +26,14 @@ export default function App() {
 
           <Chip
             icon={<AccountTreeOutlinedIcon />}
-            label="Phase 5 · CFG Visualization"
+            label="v1.0.1 · Integrated V1"
             color="primary"
             variant="outlined"
             sx={{ fontWeight: 700 }}
           />
         </Stack>
 
-        <Paper
-          variant="outlined"
-          sx={{
-            p: { xs: 2, md: 3 },
-            background:
-              'linear-gradient(145deg, rgba(14, 30, 52, .95), rgba(8, 17, 31, .95))',
-          }}
-        >
-          <Stack spacing={2}>
-            <Typography variant="h6" fontWeight={800}>
-              Scholarship Calculator · Academic Sample
-            </Typography>
-            <Typography color="text.secondary" maxWidth={900}>
-              El flujo de control ya puede explorarse visualmente. El grafo usa IDs
-              deterministas, tipos semánticos de nodos y aristas, y conserva la
-              relación con las líneas del pseudocódigo.
-            </Typography>
-            <Stack direction="row" gap={1} flexWrap="wrap">
-              {modules.map((module) => (
-                <Chip key={module} label={module} size="small" variant="outlined" />
-              ))}
-            </Stack>
-          </Stack>
-        </Paper>
-
-        <ControlFlowGraphViewer graph={scholarshipGraph} />
-        <AdjacencyMatrixPanel graph={scholarshipGraph} />
-        <TestCaseDesignerPanel />
-        <AssistedTestSuggestionsPanel />
-        <AcademicSamplesPanel />
-        <ExportPanel graph={scholarshipGraph} />
+        <AnalysisWorkspace />
       </Stack>
     </Container>
   )
