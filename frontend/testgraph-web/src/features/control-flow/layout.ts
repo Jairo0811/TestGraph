@@ -4,7 +4,7 @@ import type { ControlFlowGraphDto, FlowNodeKind } from './types'
 export type CfgNodeData = {
   label: string
   kind: FlowNodeKind
-  sourceLine?: number
+  sourceLine?: number | null
 }
 
 const nodeWidth = 190
@@ -82,7 +82,7 @@ export function toReactFlowElements(graph: ControlFlowGraphDto): {
     id: `e-${edge.sourceId}-${edge.targetId}-${index}`,
     source: String(edge.sourceId),
     target: String(edge.targetId),
-    label: edge.label,
+    label: edge.label ?? undefined,
     type: 'smoothstep',
     animated: edge.kind === 'Back',
     data: { kind: edge.kind },
