@@ -1,24 +1,7 @@
 import { Paper, Stack, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from '@mui/material'
-import type { ControlFlowGraphDto } from '../control-flow/types'
+import type { MatrixResultDto } from '../../api/types'
 
-export interface AdjacencyMatrixPanelProps {
-  graph: ControlFlowGraphDto
-}
-
-export default function AdjacencyMatrixPanel({ graph }: AdjacencyMatrixPanelProps) {
-  const nodeIds = [...graph.nodes].map((node) => node.id).sort((a, b) => a - b)
-  const indexes = new Map(nodeIds.map((id, index) => [id, index]))
-  const matrix = nodeIds.map(() => nodeIds.map(() => 0))
-
-  graph.edges.forEach((edge) => {
-    const row = indexes.get(edge.sourceId)
-    const column = indexes.get(edge.targetId)
-
-    if (row !== undefined && column !== undefined) {
-      matrix[row][column] += 1
-    }
-  })
-
+export default function AdjacencyMatrixPanel({ matrix }: { matrix: MatrixResultDto }) {
   return (
     <Stack spacing={2}>
       <div>
@@ -35,7 +18,7 @@ export default function AdjacencyMatrixPanel({ graph }: AdjacencyMatrixPanelProp
           <TableHead>
             <TableRow>
               <TableCell sx={{ fontWeight: 800 }}>Nodo</TableCell>
-              {nodeIds.map((id) => (
+              {matrix.nodeIds.map((id) => (
                 <TableCell key={id} align="center" sx={{ fontWeight: 800 }}>
                   {id}
                 </TableCell>
@@ -43,14 +26,14 @@ export default function AdjacencyMatrixPanel({ graph }: AdjacencyMatrixPanelProp
             </TableRow>
           </TableHead>
           <TableBody>
-            {matrix.map((row, rowIndex) => (
-              <TableRow key={nodeIds[rowIndex]} hover>
+            {matrix.rows.map((row, rowIndex) => (
+              <TableRow key={matrix.nodeIds[rowIndex]} hover>
                 <TableCell component="th" scope="row" sx={{ fontWeight: 800 }}>
-                  {nodeIds[rowIndex]}
+                  {matrix.nodeIds[rowIndex]}
                 </TableCell>
                 {row.map((value, columnIndex) => (
                   <TableCell
-                    key={nodeIds[columnIndex]}
+                    key={matrix.nodeIds[columnIndex]}
                     align="center"
                     sx={{
                       color: value > 0 ? 'primary.main' : 'text.secondary',
