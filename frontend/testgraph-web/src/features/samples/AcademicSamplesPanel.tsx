@@ -1,4 +1,4 @@
-import { Button, Chip, Paper, Stack, Typography } from '@mui/material'
+import { Box, Button, Chip, Paper, Stack, Typography } from '@mui/material'
 import type { AcademicSampleSummaryDto } from '../../api/types'
 
 export interface AcademicSamplesPanelProps {
@@ -11,7 +11,7 @@ export default function AcademicSamplesPanel({ samples, loadingId, onLoad }: Aca
   return (
     <Stack spacing={2}>
       <div>
-        <Typography variant="h5" fontWeight={800}>
+        <Typography variant="h5" fontWeight={900}>
           Academic Samples
         </Typography>
         <Typography color="text.secondary">
@@ -19,18 +19,44 @@ export default function AcademicSamplesPanel({ samples, loadingId, onLoad }: Aca
         </Typography>
       </div>
 
-      <Stack direction={{ xs: 'column', md: 'row' }} gap={1.5} flexWrap="wrap">
+      <Box
+        sx={{
+          display: 'grid',
+          gridTemplateColumns: {
+            xs: '1fr',
+            sm: 'repeat(2, minmax(0, 1fr))',
+            lg: 'repeat(3, minmax(0, 1fr))',
+          },
+          gap: 1.5,
+        }}
+      >
         {samples.map((sample) => (
-          <Paper key={sample.id} variant="outlined" sx={{ p: 2, flex: '1 1 300px' }}>
-            <Stack spacing={1}>
-              <Typography fontWeight={800}>{sample.name}</Typography>
+          <Paper
+            key={sample.id}
+            variant="outlined"
+            sx={{
+              p: 2,
+              minWidth: 0,
+              height: '100%',
+              borderRadius: 2.5,
+              borderColor: 'rgba(148, 163, 184, .18)',
+              transition: 'transform .18s ease, border-color .18s ease, background-color .18s ease',
+              '&:hover': {
+                transform: 'translateY(-2px)',
+                borderColor: 'rgba(34, 211, 238, .3)',
+                bgcolor: 'rgba(34, 211, 238, .025)',
+              },
+            }}
+          >
+            <Stack spacing={1} height="100%">
+              <Typography fontWeight={900}>{sample.name}</Typography>
               <Typography variant="body2" color="text.secondary">
                 {sample.originalAuthor}
               </Typography>
-              <Typography variant="body2" color="text.secondary">
+              <Typography variant="body2" color="text.secondary" sx={{ flexGrow: 1 }}>
                 {sample.description}
               </Typography>
-              <Stack direction="row" gap={1} flexWrap="wrap">
+              <Stack direction="row" gap={0.75} flexWrap="wrap" useFlexGap>
                 <Chip
                   size="small"
                   label={sample.analyzerReady ? 'TGPL V1 ready' : 'Preserved · syntax pending'}
@@ -51,13 +77,14 @@ export default function AcademicSamplesPanel({ samples, loadingId, onLoad }: Aca
                 variant="outlined"
                 disabled={!sample.analyzerReady || loadingId === sample.id}
                 onClick={() => onLoad(sample.id)}
+                fullWidth
               >
                 {loadingId === sample.id ? 'Cargando…' : 'Cargar en editor'}
               </Button>
             </Stack>
           </Paper>
         ))}
-      </Stack>
+      </Box>
     </Stack>
   )
 }
