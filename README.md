@@ -3,7 +3,7 @@
 # TestGraph
 
 <img src="https://img.shields.io/badge/UNAPEC-ISO--300-003B70?style=for-the-badge" alt="UNAPEC ISO-300" />
-<img src="https://img.shields.io/badge/Estado-v1.0.0--rc.1-2563EB-2563EB?style=for-the-badge" alt="Estado: v1.0.0-rc.1" />
+<img src="https://img.shields.io/badge/Estado-v1.0.0%20estable-2563EB?style=for-the-badge" alt="Estado: v1.0.0 estable" />
 <img src="https://img.shields.io/badge/Tipo-Portafolio%20%7C%20Open%20Source-6F42C1?style=for-the-badge" alt="Proyecto de portafolio y open source" />
 
 <br/><br/>
@@ -125,7 +125,7 @@ Control Flow Graph
 
 ## 🧠 TGPL — TestGraph Pseudocode Language
 
-TestGraph V1 utilizará un lenguaje de pseudocódigo controlado en lugar de intentar interpretar pseudocódigo arbitrario en lenguaje natural.
+TestGraph V1 utiliza un lenguaje de pseudocódigo controlado en lugar de intentar interpretar pseudocódigo arbitrario en lenguaje natural.
 
 ```text
 Entero edad
@@ -171,7 +171,7 @@ Construcciones iniciales:
 
 ## ⚙️ Motor de análisis
 
-El núcleo de TestGraph debe permanecer determinístico:
+El núcleo de TestGraph permanece determinístico:
 
 ```text
 Source Code
@@ -193,7 +193,7 @@ Complexity / Paths / Matrix / Tests
 
 ### Complejidad ciclomática
 
-Para un grafo de flujo de control conectado se utilizarán las formulaciones equivalentes:
+Para un grafo de flujo de control conectado se utilizan las formulaciones equivalentes:
 
 ```text
 V(G) = E - N + 2
@@ -216,11 +216,11 @@ El número de caminos base corresponde a la complejidad ciclomática:
 Basis Paths = V(G)
 ```
 
-La interfaz permitirá seleccionar un camino y resaltarlo directamente sobre el CFG.
+La interfaz permite seleccionar un camino y resaltarlo directamente sobre el CFG.
 
 ### Cobertura estructural
 
-V1 modelará cobertura estructural sin instrumentación runtime:
+V1 modela cobertura estructural sin instrumentación runtime:
 
 - Node Coverage;
 - Edge Coverage;
@@ -231,7 +231,7 @@ V1 modelará cobertura estructural sin instrumentación runtime:
 
 ## 🧪 Ejercicios académicos preservados
 
-Los ejercicios originales se conservarán como muestras y escenarios de validación del motor:
+Los ejercicios originales se conservan como muestras y escenarios de validación del motor:
 
 1. **Matrix Minimum Even** — identificar la columna con el menor número par en una matriz 5x3.
 2. **Scholarship Calculator** — calcular una beca según edad y promedio académico.
@@ -263,7 +263,7 @@ Complejidad ciclomática original: `3`.
 
 ---
 
-## 🧱 Stack tecnológico objetivo
+## 🧱 Stack tecnológico
 
 ### 🎨 Frontend
 
@@ -302,13 +302,11 @@ Complejidad ciclomática original: `3`.
 - Git / GitHub;
 - GitHub Actions.
 
-> El stack anterior corresponde a la arquitectura objetivo definida en **Fase 0**. La implementación de código comienza formalmente en **Fase 1**.
-
 ---
 
-## 🏗️ Arquitectura objetivo
+## 🏗️ Arquitectura
 
-TestGraph utilizará **Modular Monolith + Clean Architecture**.
+TestGraph utiliza **Modular Monolith + Clean Architecture**.
 
 ```text
 TestGraph.sln
@@ -325,11 +323,11 @@ tests/
 ├── TestGraph.Application.Tests
 └── TestGraph.Analysis.Tests
 
-web/
+frontend/
 └── testgraph-web
 ```
 
-`TestGraph.Analysis` será el principal diferenciador técnico:
+`TestGraph.Analysis` es el principal diferenciador técnico:
 
 ```text
 TestGraph.Analysis
@@ -345,18 +343,18 @@ TestGraph.Analysis
 
 ---
 
-## 🗃️ Modelo de dominio inicial
+## 🗃️ Modelo de dominio
 
-Entidades base definidas para la implementación:
+Entidades base:
 
 - `Project`;
-- `Analysis`;
+- `AnalysisRecord`;
 - `GraphNode`;
 - `GraphEdge`;
 - `ExecutionPath`;
 - `TestCase`.
 
-La autenticación seguirá inicialmente el modelo:
+La autenticación sigue el modelo:
 
 ```text
 Guest Mode
@@ -364,27 +362,13 @@ Guest Mode
 Optional Account
 ```
 
-Los invitados podrán analizar pseudocódigo y utilizar muestras; las cuentas añadirán persistencia, historial, exportaciones y almacenamiento asociado al usuario.
+Los invitados pueden analizar pseudocódigo y utilizar muestras; las cuentas añaden persistencia, historial y almacenamiento asociado al usuario.
 
 ---
 
-## 🔌 Dirección de API
+## 🔌 API
 
-Endpoints iniciales previstos:
-
-```http
-POST /api/analysis/parse
-POST /api/analysis/control-flow
-POST /api/analysis/complexity
-POST /api/analysis/paths
-POST /api/analysis/test-cases
-```
-
-Posteriormente el flujo podrá consolidarse en:
-
-```http
-POST /api/analysis
-```
+TestGraph V1 expone endpoints para análisis de complejidad, caminos, matrices, diseño/generación de casos de prueba, proyectos persistidos, autenticación, muestras académicas y exportaciones.
 
 ---
 
@@ -392,19 +376,14 @@ POST /api/analysis
 
 La IA **no forma parte del núcleo matemático ni estructural** de TestGraph.
 
-Deben permanecer determinísticos:
+Permanecen determinísticos:
 
 - generación del CFG;
 - complejidad ciclomática;
 - análisis de caminos;
 - matrices de adyacencia.
 
-La IA podrá incorporarse como apoyo para:
-
-- explicar grafos y caminos;
-- sugerir escenarios de prueba adicionales;
-- explicar complejidad elevada;
-- sugerir oportunidades de refactorización.
+La IA podrá incorporarse como apoyo en versiones futuras para explicar resultados y sugerir escenarios adicionales sin sustituir el análisis estructural determinístico.
 
 ---
 
@@ -415,7 +394,6 @@ La IA podrá incorporarse como apoyo para:
 - análisis de JavaScript/TypeScript;
 - análisis de Python;
 - análisis automático de repositorios GitHub;
-- integraciones CI/CD;
 - instrumentación runtime;
 - mutation testing;
 - load testing;
@@ -449,15 +427,15 @@ La IA podrá incorporarse como apoyo para:
 | 13 | Academic Samples | ✅ |
 | 14 | Exports & Reports | ✅ |
 | 15 | QA + Hardening | ✅ |
-| 16 | Release Candidate | 🔄 |
+| 16 | Release Candidate / Stable V1 | ✅ |
 
 ---
 
 ## 📊 Estado actual
 
-**Fases 0 a 15 completadas. Fase 16 — Release Candidate (v1.0.0-rc.1) en revisión.**
+**Roadmap V1 completado: Fases 0 a 16 ✅ · TestGraph v1.0.0 estable.**
 
-TestGraph ya está formalmente definido como una plataforma visual de análisis de flujo de control y pruebas de caja blanca. El roadmap V1 está implementado hasta la **Fase 16 — Release Candidate**. El siguiente paso es integrar los PRs pendientes en orden, validar CI en `main` y promover `v1.0.0-rc.1` a una versión estable cuando no queden bloqueos.
+La versión estable conserva el núcleo determinístico validado en `v1.0.0-rc.1`, con CI verde para backend, frontend y documentación. Las mejoras posteriores corresponden a la evolución V2/V3 y no forman parte del cierre del roadmap V1.
 
 ---
 
