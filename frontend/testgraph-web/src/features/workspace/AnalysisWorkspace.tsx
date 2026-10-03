@@ -13,6 +13,7 @@ import TestCaseDesignerPanel from '../testing/TestCaseDesignerPanel'
 import AssistedTestSuggestionsPanel from '../testing/AssistedTestSuggestionsPanel'
 import AcademicSamplesPanel from '../samples/AcademicSamplesPanel'
 import ExportPanel from '../export/ExportPanel'
+import AccountProjectsPanel from '../account/AccountProjectsPanel'
 
 const defaultSource = `Entero edad
 Real promedio
@@ -159,6 +160,8 @@ export default function AnalysisWorkspace() {
           <ExportPanel graph={analysis.graph} />
         </>
       ) : null}
+
+      <AccountProjectsPanel sourceCode={source} />
 
       {samplesQuery.error ? (
         <Alert severity="warning">
