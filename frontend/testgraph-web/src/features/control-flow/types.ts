@@ -6,14 +6,14 @@ export interface FlowNodeDto {
   id: number
   kind: FlowNodeKind
   label: string
-  sourceLine?: number
+  sourceLine?: number | null
 }
 
 export interface FlowEdgeDto {
   sourceId: number
   targetId: number
   kind: FlowEdgeKind
-  label?: string
+  label?: string | null
 }
 
 export interface ControlFlowGraphDto {
