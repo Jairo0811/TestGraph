@@ -2,6 +2,16 @@
 
 All notable changes to TestGraph are documented here.
 
+## [1.0.0] - 2026-10-02
+
+### Stable release
+
+- promotes the validated `v1.0.0-rc.1` codebase to the first stable TestGraph V1 release;
+- preserves the complete Phase 0–16 roadmap implementation;
+- confirms green backend restore/build/tests and frontend install/lint/build gates;
+- keeps the Scholarship Calculator academic `V(G)=7` value as historical documentation while the deterministic executable TGPL flow correctly evaluates to `V(G)=8`;
+- retains the documented V1 limitations for matrix/array syntax and PDF reporting.
+
 ## [1.0.0-rc.1] - 2026-09-30
 
 ### Added
