@@ -1,19 +1,24 @@
 import { useState } from 'react'
 import {
+  Alert,
   Button,
+  Chip,
   MenuItem,
   Paper,
   Stack,
   TextField,
   Typography,
-  Chip,
 } from '@mui/material'
+import { useMutation } from '@tanstack/react-query'
+import { designTestCases } from '../../api/client'
+import type { BasisPathDto, TestCaseDraftDto } from '../../api/types'
 
-type DraftCase = {
+type DraftForm = {
   name: string
   inputs: string
-  expected: string
+  expectedResult: string
   technique: string
+  linkedPathNumber: string
 }
 
 const techniques = [
@@ -25,19 +30,59 @@ const techniques = [
   'InvalidInput',
 ]
 
-export default function TestCaseDesignerPanel() {
-  const [draft, setDraft] = useState<DraftCase>({
+function parseInputs(raw: string) {
+  const inputs: Record<string, string> = {}
+  raw.split(/\r?\n/).forEach((line) => {
+    const index = line.indexOf('=')
+    if (index <= 0) return
+    const key = line.slice(0, index).trim()
+    const value = line.slice(index + 1).trim()
+    if (key) inputs[key] = value
+  })
+  return inputs
+}
+
+export interface TestCaseDesignerPanelProps {
+  sourceCode: string
+  paths: BasisPathDto[]
+}
+
+export default function TestCaseDesignerPanel({ sourceCode, paths }: TestCaseDesignerPanelProps) {
+  const [draft, setDraft] = useState<DraftForm>({
     name: '',
     inputs: '',
-    expected: '',
+    expectedResult: '',
     technique: 'Manual',
+    linkedPathNumber: '',
   })
-  const [cases, setCases] = useState<DraftCase[]>([])
+  const [drafts, setDrafts] = useState<TestCaseDraftDto[]>([])
+
+  const designMutation = useMutation({
+    mutationFn: () => designTestCases(sourceCode, drafts),
+  })
 
   const addCase = () => {
-    if (!draft.name.trim() || !draft.expected.trim()) return
-    setCases((current) => [...current, draft])
-    setDraft({ name: '', inputs: '', expected: '', technique: 'Manual' })
+    if (!draft.name.trim() || !draft.expectedResult.trim()) return
+
+    setDrafts((current) => [
+      ...current,
+      {
+        name: draft.name.trim(),
+        inputs: parseInputs(draft.inputs),
+        expectedResult: draft.expectedResult.trim(),
+        technique: draft.technique,
+        linkedPathNumber: draft.linkedPathNumber ? Number(draft.linkedPathNumber) : undefined,
+      },
+    ])
+
+    setDraft({
+      name: '',
+      inputs: '',
+      expectedResult: '',
+      technique: 'Manual',
+      linkedPathNumber: '',
+    })
+    designMutation.reset()
   }
 
   return (
@@ -47,7 +92,7 @@ export default function TestCaseDesignerPanel() {
           Test Case Designer
         </Typography>
         <Typography color="text.secondary">
-          Diseña casos de prueba estructurales y clasifícalos por técnica.
+          Diseña casos estructurales y vincúlalos opcionalmente a un basis path real.
         </Typography>
       </div>
 
@@ -68,21 +113,38 @@ export default function TestCaseDesignerPanel() {
           />
           <TextField
             label="Resultado esperado"
-            value={draft.expected}
-            onChange={(event) => setDraft({ ...draft, expected: event.target.value })}
+            value={draft.expectedResult}
+            onChange={(event) => setDraft({ ...draft, expectedResult: event.target.value })}
           />
-          <TextField
-            select
-            label="Técnica"
-            value={draft.technique}
-            onChange={(event) => setDraft({ ...draft, technique: event.target.value })}
-          >
-            {techniques.map((technique) => (
-              <MenuItem key={technique} value={technique}>
-                {technique}
-              </MenuItem>
-            ))}
-          </TextField>
+          <Stack direction={{ xs: 'column', md: 'row' }} gap={1.5}>
+            <TextField
+              select
+              label="Técnica"
+              value={draft.technique}
+              onChange={(event) => setDraft({ ...draft, technique: event.target.value })}
+              sx={{ flex: 1 }}
+            >
+              {techniques.map((technique) => (
+                <MenuItem key={technique} value={technique}>
+                  {technique}
+                </MenuItem>
+              ))}
+            </TextField>
+            <TextField
+              select
+              label="Basis path"
+              value={draft.linkedPathNumber}
+              onChange={(event) => setDraft({ ...draft, linkedPathNumber: event.target.value })}
+              sx={{ flex: 1 }}
+            >
+              <MenuItem value="">Sin vínculo</MenuItem>
+              {paths.map((path) => (
+                <MenuItem key={path.number} value={String(path.number)}>
+                  Path {path.number} · {path.display}
+                </MenuItem>
+              ))}
+            </TextField>
+          </Stack>
           <Button variant="contained" onClick={addCase}>
             Agregar caso
           </Button>
@@ -90,25 +152,43 @@ export default function TestCaseDesignerPanel() {
       </Paper>
 
       <Stack spacing={1}>
-        {cases.map((testCase, index) => (
+        {drafts.map((testCase, index) => (
           <Paper key={`${testCase.name}-${index}`} variant="outlined" sx={{ p: 2 }}>
             <Stack direction={{ xs: 'column', md: 'row' }} justifyContent="space-between" gap={1}>
               <div>
                 <Typography fontWeight={800}>
                   TC-{String(index + 1).padStart(2, '0')} · {testCase.name}
                 </Typography>
-                <Typography variant="body2" color="text.secondary" sx={{ whiteSpace: 'pre-line' }}>
-                  {testCase.inputs || 'Sin entradas documentadas'}
+                <Typography variant="body2" color="text.secondary">
+                  {Object.entries(testCase.inputs).map(([key, value]) => `${key}=${value}`).join(' · ') || 'Sin entradas documentadas'}
                 </Typography>
                 <Typography variant="body2" mt={1}>
-                  Esperado: {testCase.expected}
+                  Esperado: {testCase.expectedResult}
                 </Typography>
               </div>
-              <Chip label={testCase.technique} size="small" />
+              <Stack direction="row" gap={1} alignItems="flex-start">
+                <Chip label={testCase.technique} size="small" />
+                {testCase.linkedPathNumber ? <Chip label={`Path ${testCase.linkedPathNumber}`} size="small" variant="outlined" /> : null}
+              </Stack>
             </Stack>
           </Paper>
         ))}
       </Stack>
+
+      {drafts.length > 0 ? (
+        <Button variant="outlined" disabled={designMutation.isPending} onClick={() => designMutation.mutate()}>
+          {designMutation.isPending ? 'Validando…' : 'Validar casos contra el CFG'}
+        </Button>
+      ) : null}
+
+      {designMutation.error ? <Alert severity="error">{designMutation.error.message}</Alert> : null}
+      {designMutation.data ? (
+        <Alert severity={designMutation.data.isValid ? 'success' : 'warning'}>
+          {designMutation.data.isValid
+            ? `${designMutation.data.testCases.length} caso(s) validados estructuralmente.`
+            : designMutation.data.diagnostics.map((diagnostic) => diagnostic.message).join(' · ')}
+        </Alert>
+      ) : null}
     </Stack>
   )
 }
