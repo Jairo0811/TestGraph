@@ -104,9 +104,9 @@ export function createProject(name: string, description?: string) {
   })
 }
 
-export function saveAnalysis(projectId: string, sourceCode: string) {
+export function saveAnalysis(projectId: string, sourceCode: string, testCases: TestCaseDraftDto[] = []) {
   return api<SavedAnalysisDto>(`/api/projects/${projectId}/analyses`, {
     method: 'POST',
-    body: JSON.stringify({ sourceCode }),
+    body: JSON.stringify({ sourceCode, testCases }),
   })
 }
