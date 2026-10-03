@@ -8,36 +8,68 @@ export type CfgNodeData = {
 }
 
 const nodeWidth = 190
-const rowGap = 130
-const columnGap = 250
+const rowGap = 140
+const columnGap = 240
 
-const manualPositions: Record<number, { x: number; y: number }> = {
-  1: { x: 360, y: 0 },
-  2: { x: 360, y: rowGap },
-  3: { x: 360, y: rowGap * 2 },
-  4: { x: 360, y: rowGap * 3 },
-  5: { x: 150, y: rowGap * 4 },
-  10: { x: 650, y: rowGap * 4 },
-  6: { x: 40, y: rowGap * 5 },
-  7: { x: 270, y: rowGap * 5 },
-  8: { x: 160, y: rowGap * 6 },
-  9: { x: 380, y: rowGap * 6 },
-  11: { x: 360, y: rowGap * 7 },
-  12: { x: 360, y: rowGap * 8 },
-  13: { x: 360, y: rowGap * 9 },
+function calculatePositions(graph: ControlFlowGraphDto) {
+  const levelById = new Map<number, number>([[graph.entryNodeId, 0]])
+  const queue = [graph.entryNodeId]
+
+  while (queue.length > 0) {
+    const current = queue.shift()!
+    const currentLevel = levelById.get(current) ?? 0
+
+    graph.edges
+      .filter((edge) => edge.sourceId === current && edge.kind !== 'Back')
+      .sort((a, b) => a.targetId - b.targetId)
+      .forEach((edge) => {
+        if (!levelById.has(edge.targetId)) {
+          levelById.set(edge.targetId, currentLevel + 1)
+          queue.push(edge.targetId)
+        }
+      })
+  }
+
+  const maxLevel = Math.max(0, ...levelById.values())
+  graph.nodes.forEach((node) => {
+    if (!levelById.has(node.id)) levelById.set(node.id, maxLevel + 1)
+  })
+
+  const groups = new Map<number, number[]>()
+  graph.nodes.forEach((node) => {
+    const level = levelById.get(node.id) ?? 0
+    const group = groups.get(level) ?? []
+    group.push(node.id)
+    groups.set(level, group)
+  })
+
+  const positions = new Map<number, { x: number; y: number }>()
+  Array.from(groups.entries())
+    .sort(([a], [b]) => a - b)
+    .forEach(([level, ids]) => {
+      ids.sort((a, b) => a - b)
+      const width = (ids.length - 1) * columnGap
+      ids.forEach((id, index) => {
+        positions.set(id, {
+          x: 520 - width / 2 + index * columnGap,
+          y: level * rowGap,
+        })
+      })
+    })
+
+  return positions
 }
 
 export function toReactFlowElements(graph: ControlFlowGraphDto): {
   nodes: Node<CfgNodeData>[]
   edges: Edge[]
 } {
-  const nodes = graph.nodes.map((node, index) => ({
+  const positions = calculatePositions(graph)
+
+  const nodes = graph.nodes.map((node) => ({
     id: String(node.id),
     type: 'cfg',
-    position: manualPositions[node.id] ?? {
-      x: (index % 3) * columnGap,
-      y: Math.floor(index / 3) * rowGap,
-    },
+    position: positions.get(node.id) ?? { x: 0, y: 0 },
     data: {
       label: node.label,
       kind: node.kind,
@@ -51,7 +83,7 @@ export function toReactFlowElements(graph: ControlFlowGraphDto): {
     source: String(edge.sourceId),
     target: String(edge.targetId),
     label: edge.label,
-    type: edge.kind === 'Back' ? 'smoothstep' : 'default',
+    type: 'smoothstep',
     animated: edge.kind === 'Back',
     data: { kind: edge.kind },
   } satisfies Edge))
