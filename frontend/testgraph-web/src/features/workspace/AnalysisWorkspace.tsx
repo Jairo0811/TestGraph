@@ -98,17 +98,40 @@ export default function AnalysisWorkspace() {
   const selectedPath = analysis?.paths.items.find((path) => path.number === selectedPathNumber)
 
   return (
-    <Stack spacing={4}>
-      <Paper variant="outlined" sx={{ p: { xs: 2, md: 3 } }}>
-        <Stack spacing={2}>
-          <Stack direction={{ xs: 'column', md: 'row' }} justifyContent="space-between" gap={2}>
+    <Stack spacing={{ xs: 3, md: 4 }}>
+      <Paper
+        variant="outlined"
+        sx={{
+          p: { xs: 2, sm: 2.5, md: 3 },
+          borderRadius: { xs: 2.5, md: 3 },
+          borderColor: 'rgba(148, 163, 184, .18)',
+          bgcolor: 'rgba(16, 27, 45, .84)',
+          backdropFilter: 'blur(8px)',
+        }}
+      >
+        <Stack spacing={{ xs: 1.75, md: 2.25 }}>
+          <Stack
+            direction={{ xs: 'column', lg: 'row' }}
+            justifyContent="space-between"
+            alignItems={{ lg: 'flex-start' }}
+            gap={2}
+          >
             <div>
-              <Typography variant="h5" fontWeight={800}>TGPL Analyzer</Typography>
-              <Typography color="text.secondary">
+              <Typography variant="h5" fontWeight={900}>
+                TGPL Analyzer
+              </Typography>
+              <Typography color="text.secondary" sx={{ mt: 0.35 }}>
                 Edita pseudocódigo TGPL y ejecuta el pipeline real del backend.
               </Typography>
             </div>
-            <Stack direction="row" gap={1} flexWrap="wrap">
+
+            <Stack
+              direction="row"
+              gap={0.75}
+              flexWrap="wrap"
+              useFlexGap
+              sx={{ maxWidth: { lg: 520 } }}
+            >
               <Chip label="Lexer" size="small" variant="outlined" />
               <Chip label="Parser + AST" size="small" variant="outlined" />
               <Chip label="CFG" size="small" variant="outlined" />
@@ -122,16 +145,26 @@ export default function AnalysisWorkspace() {
             value={source}
             onChange={(event) => updateSource(event.target.value)}
             multiline
-            minRows={18}
-            maxRows={30}
+            minRows={14}
+            maxRows={28}
             fullWidth
             slotProps={{
               input: {
                 sx: {
+                  alignItems: 'flex-start',
                   fontFamily: 'Consolas, "Cascadia Code", monospace',
-                  fontSize: 14,
-                  lineHeight: 1.55,
+                  fontSize: { xs: 12.5, sm: 14 },
+                  lineHeight: 1.6,
+                  '& textarea': {
+                    overflowX: 'auto !important',
+                    whiteSpace: 'pre',
+                  },
                 },
+              },
+            }}
+            sx={{
+              '& .MuiOutlinedInput-root': {
+                bgcolor: 'rgba(7, 17, 31, .42)',
               },
             }}
           />
@@ -142,6 +175,7 @@ export default function AnalysisWorkspace() {
               startIcon={<PlayArrowOutlinedIcon />}
               disabled={analysisMutation.isPending || !source.trim()}
               onClick={runAnalysis}
+              sx={{ width: { xs: '100%', sm: 'auto' }, minWidth: { sm: 140 } }}
             >
               {analysisMutation.isPending ? 'Analizando…' : 'Analizar'}
             </Button>
@@ -152,6 +186,7 @@ export default function AnalysisWorkspace() {
                 setSource(defaultSource)
                 clearDerivedState()
               }}
+              sx={{ width: { xs: '100%', sm: 'auto' } }}
             >
               Restaurar Becas
             </Button>
