@@ -9,6 +9,8 @@ using TestGraph.Api;
 using TestGraph.Domain.Identity;
 using TestGraph.Infrastructure.Persistence;
 
+const string developmentJwtKey = "dev-only-change-me-testgraph-signing-key-2026";
+
 var builder = WebApplication.CreateBuilder(args);
 
 builder.WebHost.ConfigureKestrel(options =>
@@ -30,6 +32,12 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
         if (Encoding.UTF8.GetByteCount(key) < 32)
         {
             throw new InvalidOperationException("Jwt:Key must contain at least 32 bytes.");
+        }
+
+        if (!builder.Environment.IsDevelopment() && key == developmentJwtKey)
+        {
+            throw new InvalidOperationException(
+                "The development JWT signing key cannot be used outside the Development environment.");
         }
 
         options.TokenValidationParameters = new TokenValidationParameters
